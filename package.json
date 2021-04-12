@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/rafaeltarrendo41/ISI_Back/issues"
   },
-  "homepage": "https://github.com/rafaeltarrendo41/ISI_Back#readme"
+  "homepage": "https://github.com/rafaeltarrendo41/ISI_Back#readme",
+  "dependencies": {
+    "express-sanitizer": "^1.0.5"
+  }
 }
