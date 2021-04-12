@@ -11,3 +11,7 @@ const server = app.listen(process.env.PORT, function(err){
         console.log(err);
     }
 });
+
+server.timeout = 100000;
+
+module.exports = app;
