@@ -1,0 +1,20 @@
+{
+  "name": "isi_back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafaeltarrendo41/ISI_Back.git"
+  },
+  "author": "\"ISIG83\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rafaeltarrendo41/ISI_Back/issues"
+  },
+  "homepage": "https://github.com/rafaeltarrendo41/ISI_Back#readme"
+}
