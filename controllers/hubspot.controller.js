@@ -17,7 +17,7 @@ function getCompanies(callback) {
         },
         headers: {
             accept: 'application/json',
-            authorization: 'Bearer 3e91d9c4-cd74-452b-8f40-4aeb8457e911'
+            authorization: 'Bearer '+ process.env.HUBSPOT_KEY
         }
     };
 
@@ -27,6 +27,8 @@ function getCompanies(callback) {
         console.log(body);
     });
 }
+
+
 
 module.exports = {
     getCompanies: getCompanies
