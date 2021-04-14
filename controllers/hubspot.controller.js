@@ -11,21 +11,48 @@ function getCompanies(callback) {
         method: 'GET',
         url: 'https://api.hubapi.com/crm/v3/objects/companies',
         qs: {
-            limit: '',
+            limit: '100',
+            properties: 'numero_de_identificacao_fiscal,name',
             archived: 'false',
             hapikey: process.env.HUBSPOT_KEY
         },
         headers: {
             accept: 'application/json',
-            authorization: 'Bearer '+ process.env.HUBSPOT_KEY
+            authorization: 'Bearer ' + process.env.HUBSPOT_KEY
         }
     };
 
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (!error) {
+            if (response.statusCode == 200) {
+                const users = JSON.parse(response.body).companies;
 
-        console.log(body);
-    });
+
+                let usersF = [];
+                for (let i = 0; i < users.lenght; i++) {
+                    usersF.push[i]({
+                        'id': users[i].numero_de_identificacao_fiscal,
+                        'name': users[i].properties.name,
+                    })
+                }
+                callback({
+                    users: usersF
+                })
+            } else {
+                callback({
+                    'statusCode': response.statusCode,
+                    'body': JSON.parse(response.body)
+                })
+            }
+        } else {
+            console.log(error),
+                callback({
+                    'statusCode': 400,
+                    'body': 'erro'
+                })
+        }
+
+    })
 }
 
 /*
@@ -44,20 +71,20 @@ function postCompanies(callback) {
         },
         headers: {
             accept: 'application/json', 'content-type': 'application/json',
-            authorization: 'Bearer '+ process.env.HUBSPOT_KEY
+            authorization: 'Bearer ' + process.env.HUBSPOT_KEY
         },
         body: {
             //inserir atributos necessarios para a criaçao da empresa e ir buscar as variaveis
-            properties: {city: '', domain: '', industry: '', name: '', phone: '', state: '', VAT: ''}
+            properties: { city: '', domain: '', industry: '', name: '', phone: '', state: '', VAT: '' }
         },
         json: true
-      };
-      
-      request(options, function (error, response, body) {
+    };
+
+    request(options, function (error, response, body) {
         if (error) throw new Error(error);
-      
+
         console.log(body);
-      });
+    });
 }
 
 /*
@@ -76,24 +103,24 @@ function updateCompanies(callback) {
         },
         headers: {
             accept: 'application/json', 'content-type': 'application/json',
-            authorization: 'Bearer '+ process.env.HUBSPOT_KEY
+            authorization: 'Bearer ' + process.env.HUBSPOT_KEY
         },
         body: {
             //inserir atributos necessarios para a criaçao da empresa e ir buscar as variaveis
-            properties: {city: '', domain: '', industry: '', name: '', phone: '', state: '', VAT: ''}
+            properties: { city: '', domain: '', industry: '', name: '', phone: '', state: '', VAT: '' }
         },
         json: true
-      };
-      
-      request(options, function (error, response, body) {
+    };
+
+    request(options, function (error, response, body) {
         if (error) throw new Error(error);
-      
+
         console.log(body);
-      });
+    });
 }
 
 module.exports = {
     getCompanies: getCompanies,
     postCompanies: postCompanies,
-    updateCompanies:updateCompanies
+    updateCompanies: updateCompanies
 }
