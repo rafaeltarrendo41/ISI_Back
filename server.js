@@ -1,12 +1,28 @@
 require('dotenv').config();
 
 const express = require('express');
-const port = process.env.PORT || 3306;
-const host = process.env.HOST || '193.136.11.180';
+var app = express();
+
+const bodyParser = require('body-parser');
+const validator = require('express-validator');
+const sanitizer = require('express-sanitizer');
 
 global.urlBase = 'https://wtransnet.herokuapp.com/';
 
-var app = express();
+
+
+app.use(bodyParser.json({
+    limit: '50mb',
+    verify: function(request, response, buffer){
+        if(request.originalUrl.startsWith('/webhook')){
+            request.rawBody = buffer.toString();
+        }
+    }
+}), bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use('/', require('./routes/main.routes'));
 
 const server = app.listen(process.env.PORT, function(err){
     if(!err){
