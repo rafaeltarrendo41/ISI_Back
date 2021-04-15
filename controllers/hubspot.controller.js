@@ -102,7 +102,11 @@ PATCH
 Função que permite atualizar os clientes no Hubspot através do companyId
 */
 
-function updateCompanies(callback) {
+function updateCompanies(user_id, properties, callback) {
+    let json = {
+        'properties': properties
+    }
+
     var options = {
         method: 'PATCH',
         url: 'https://api.hubapi.com/crm/v3/objects/companies/5860045128',
@@ -115,18 +119,24 @@ function updateCompanies(callback) {
             accept: 'application/json', 'content-type': 'application/json',
             authorization: 'Bearer ' + process.env.HUBSPOT_KEY
         },
-        body: {
-            //inserir atributos necessarios para a criaçao da empresa e ir buscar as variaveis
-            properties: { city: '', domain: '', industry: '', name: '', phone: '', state: '', VAT: '' }
-        },
-        json: true
+        body: JSON.stringify(json)
     };
 
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-
-        console.log(body);
-    });
+    req.post(options, (err, res) => {
+        if (!err && res.statusCode == 204) {
+            callback({
+                'statusCode': 200,
+                'body': {
+                    'message': 'Updated with sucess'
+                }
+            })
+        } else {
+            callback({
+                'statusCode': res.statusCode,
+                'body': JSON.parse(res.body)
+            })
+        }
+    })
 }
 
 module.exports = {
