@@ -60,7 +60,7 @@ POST
 Função que permite criar clientes no Hubspot
 */
 
-function postCompanies(callback) {
+function createCompanies(callback) {
     var options = {
         method: 'POST',
         url: 'https://api.hubapi.com/crm/v3/objects/companies',
