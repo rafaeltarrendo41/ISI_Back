@@ -60,7 +60,11 @@ POST
 Função que permite criar clientes no Hubspot
 */
 
-function postCompanies(callback) {
+function createCompanies(properties, callback) {
+    let json = {
+        'properties': properties
+    };
+
     var options = {
         method: 'POST',
         url: 'https://api.hubapi.com/crm/v3/objects/companies',
@@ -73,18 +77,24 @@ function postCompanies(callback) {
             accept: 'application/json', 'content-type': 'application/json',
             authorization: 'Bearer ' + process.env.HUBSPOT_KEY
         },
-        body: {
-            //inserir atributos necessarios para a criaçao da empresa e ir buscar as variaveis
-            properties: { city: '', domain: '', industry: '', name: '', phone: '', state: '', VAT: '' }
-        },
-        json: true
+        body: json.stringify(json)
     };
 
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-
-        console.log(body);
-    });
+    req.post(options, (err, res) => {
+        if (!err && res.statusCode == 200) {
+            callback({
+                'statusCode': 200,
+                body: {
+                    'user_id': JSON.parse(res.body).id
+                }
+            })
+        } else {
+            callback({
+                'statusCode': res.statusCode,
+                'body': JSON.parse(res.body)
+            })
+        }
+    })
 }
 
 /*
@@ -121,6 +131,6 @@ function updateCompanies(callback) {
 
 module.exports = {
     getCompanies: getCompanies,
-    postCompanies: postCompanies,
+    createCompanies: createCompanies,
     updateCompanies: updateCompanies
 }
