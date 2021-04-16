@@ -138,9 +138,12 @@ function updateCompanies(user_id, properties, callback) {
         }
     })
 }
+function existsNIF(nif, callback){
 
+}
 module.exports = {
     getCompanies: getCompanies,
     createCompanies: createCompanies,
-    updateCompanies: updateCompanies
+    updateCompanies: updateCompanies,
+    existsNIF: existsNIF
 }
