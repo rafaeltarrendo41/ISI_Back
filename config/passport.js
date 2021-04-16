@@ -18,11 +18,11 @@ passport.use('local-signin', new LocalStrategy({
             if (rows.lenght != 0) {
                 const user = rows[0];
                 if (await passValidation(user.password, password)) {
-                    if (user.isEmpresa) {
+                    if (user.isTransportadora) {
                         let userF = {
                             user_id: user.idCompanies,
                             email: user.email,
-                            isEmpresa: true
+                            isTransportadora: true
                         }
                         return done(null, userF);
                     } else {
@@ -197,7 +197,9 @@ passport.use('local-signup', new LocalStrategy({
     }
 }))
 
-
+/* 
+Função que permite verificar se a password é válida
+*/
 const passValidation = async function (userpass, password) {
     return await bCrypt.compare(password, userpass);
 }
