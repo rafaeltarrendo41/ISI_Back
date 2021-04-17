@@ -25,8 +25,8 @@ app.use(bodyParser.json({
     extended: true
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 app.set("trust proxy", 1);
 
