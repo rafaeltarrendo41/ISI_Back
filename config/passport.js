@@ -203,3 +203,5 @@ Função que permite verificar se a password é válida
 const passValidation = async function (userpass, password) {
     return await bCrypt.compare(password, userpass);
 }
+
+module.exports = passport;
