@@ -25,8 +25,8 @@ app.use(bodyParser.json({
     extended: true
 }));
 
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.set("trust proxy", 1);
 
@@ -36,6 +36,7 @@ app.use('/', function(request, response, next){
     response.header('Access-Control-Allow-Creditials', true);
     response.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS, GET');
     response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
 })
 
 
