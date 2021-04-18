@@ -4,6 +4,6 @@ const hubspotController = require('./../controllers/hubspot.controller');
 
 
 router.get('/getCompanies', hubspotController.getCompanies);
-router.post('/register', hubspotController.createCompanies);
+r//outer.post('/register', hubspotController.createCompanies);
 
 module.exports = router;
