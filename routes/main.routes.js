@@ -3,6 +3,7 @@ const router = require('express').Router();
 
 const jasminController = require('../controllers/jasmin.controller');
 const hubspotController = require('./../controllers/hubspot.controller');
+const mainController = require('./../controllers/main.controller');
 
 
 

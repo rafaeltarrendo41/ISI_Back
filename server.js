@@ -39,7 +39,7 @@ app.set("trust proxy", 1);
 // })
 
 
-require('./routes/auth.routes')(app, passport);
+//require('./routes/auth.routes')(app, passport);
 app.use('/', require('./routes/main.routes'));
 
 const server = app.listen(process.env.PORT, function(err){
