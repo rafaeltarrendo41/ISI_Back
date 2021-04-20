@@ -9,7 +9,7 @@ const sanitizer = require('express-sanitizer');
 const session = require('express-session');
 const passport = require('./config/passport');
 
-global.urlBase = `https://wtransnet.herokuapp.com`;
+global.urlBase = `127.0.0.1`;
 global.urlFront = `https://wtransnet-face.herokuapp.com`
 
 
@@ -25,8 +25,8 @@ app.use(bodyParser.json({
     extended: true
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 app.set("trust proxy", 1);
 
@@ -40,7 +40,7 @@ app.set("trust proxy", 1);
 })*/
 
 
-require('./routes/auth.routes')(app, passport);
+//require('./routes/auth.routes')(app, passport);
 app.use('/', require('./routes/main.routes'));
 
 const server = app.listen(process.env.PORT, function(err){

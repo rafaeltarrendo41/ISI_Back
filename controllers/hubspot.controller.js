@@ -1,3 +1,4 @@
+const { application } = require("express");
 var request = require("request");
 
 /*
@@ -7,37 +8,27 @@ Função que permite ir buscar todos so clientes ao Hubspot
 /* https://www.npmjs.com/package/@hubspot/api-client */
 
 function getCompanies(callback) {
-    var options = {
-        method: 'GET',
-        url: 'https://api.hubapi.com/crm/v3/objects/companies',
-        qs: {
-            limit: '100',
-            properties: 'numero_de_identificacao_fiscal,name',
-            archived: 'false',
-            hapikey: process.env.HUBSPOT_KEY
-        },
-        headers: {
-            accept: 'application/json',
-            authorization: 'Bearer ' + process.env.HUBSPOT_KEY
-        }
-    };
+    let options = {
+        url: `https://api.hubapi.com/crm/v3/objects/companies?limit=10&properties=contacts%2Cnumero_de_identificacao_fiscal%2Cname&archived=false&hapikey=${process.env.HUBSPOT_KEY}`
+    }
 
     request(options, function (error, response, body) {
         if (!error) {
             if (response.statusCode == 200) {
-                const users = JSON.parse(response.body).companies;
-
-
+                const users = JSON.parse(response.body).results;
+                var tamanho = Object.keys(users);
                 let usersF = [];
-                for (let i = 0; i < users.lenght; i++) {
-                    usersF.push[i]({
-                        'id': users[i].numero_de_identificacao_fiscal,
+                for (let i = 0; i < tamanho.length; i++) {
+                    usersF.push({
+                        'id': users[i].id,
+                        'nif': users[i].properties.numero_de_identificacao_fiscal,
                         'name': users[i].properties.name,
                     })
                 }
                 callback({
                     users: usersF
                 })
+
             } else {
                 callback({
                     'statusCode': response.statusCode,
@@ -61,37 +52,42 @@ Função que permite criar clientes no Hubspot
 */
 
 function createCompanies(properties, callback) {
-    let json = {
-        'properties': properties
-    };
+    let json = properties;
+    //console.log(json.body);
 
     var options = {
         method: 'POST',
         url: 'https://api.hubapi.com/crm/v3/objects/companies',
-        qs: {
-            limit: '',
-            archived: 'false',
-            hapikey: process.env.HUBSPOT_KEY
+        qs: {hapikey: '3e91d9c4-cd74-452b-8f40-4aeb8457e911'},
+        headers: {accept: 'application/json', 'content-type': 'application/json'},
+        body: {
+          properties: {
+            city: 'Cambridge',
+            domain: 'biglytics.net',
+            industry: 'Technology',
+            name: 'BEcasKiwi',
+            phone: '(877) 929-0687',
+            state: 'Massachusetts',
+            numero_de_identificacao_fiscal: '7'
+          }
         },
-        headers: {
-            accept: 'application/json', 'content-type': 'application/json',
-            authorization: 'Bearer ' + process.env.HUBSPOT_KEY
-        },
-        body: json.stringify(json)
-    };
+        json: true
+      };
 
-    req.post(options, (err, res) => {
-        if (!err && res.statusCode == 200) {
+    request.post(options, function(err, res) {
+        if (!err && res.statusCode == 201) {
+            console.log("AQui crl");
+            console.log((res.body).id);
             callback({
                 'statusCode': 200,
-                body: {
-                    'user_id': JSON.parse(res.body).id
+                'body': {
+                    'user_id':(res.body).id
                 }
             })
         } else {
             callback({
                 'statusCode': res.statusCode,
-                'body': JSON.parse(res.body)
+                'body': res.body
             })
         }
     })
@@ -138,7 +134,7 @@ function updateCompanies(user_id, properties, callback) {
         }
     })
 }
-function existsNIF(nif, callback){
+function existsNIF(nif, callback) {
 
 }
 module.exports = {
