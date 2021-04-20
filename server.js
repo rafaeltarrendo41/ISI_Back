@@ -9,7 +9,7 @@ const sanitizer = require('express-sanitizer');
 const session = require('express-session');
 const passport = require('./config/passport');
 
-global.urlBase = `https://wtransnet.herokuapp.com`;
+global.urlBase = `127.0.0.1`;
 global.urlFront = `https://wtransnet-face.herokuapp.com`
 
 
@@ -30,13 +30,13 @@ app.use(bodyParser.json({
 
 app.set("trust proxy", 1);
 
-//CORS
-app.use('/', function(request, response, next){
-    response.header('Access-Control-Allow-Origin', urlFront);
-    response.header('Access-Control-Allow-Creditials', true);
-    response.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS, GET');
-    response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-})
+// //CORS
+// app.use('/', function(request, response, next){
+//     response.header('Access-Control-Allow-Origin', urlFront);
+//     response.header('Access-Control-Allow-Creditials', true);
+//     response.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS, GET');
+//     response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+// })
 
 
 require('./routes/auth.routes')(app, passport);
