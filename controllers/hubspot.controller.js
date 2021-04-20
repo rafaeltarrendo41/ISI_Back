@@ -1,4 +1,4 @@
-const { application } = require("express");
+//const { application } = require("express");
 var request = require("request");
 
 /*
@@ -60,17 +60,7 @@ function createCompanies(properties, callback) {
         url: 'https://api.hubapi.com/crm/v3/objects/companies',
         qs: {hapikey: '3e91d9c4-cd74-452b-8f40-4aeb8457e911'},
         headers: {accept: 'application/json', 'content-type': 'application/json'},
-        body: {
-          properties: {
-            city: 'Cambridge',
-            domain: 'biglytics.net',
-            industry: 'Technology',
-            name: 'BEcasKiwi',
-            phone: '(877) 929-0687',
-            state: 'Massachusetts',
-            numero_de_identificacao_fiscal: '7'
-          }
-        },
+        body: json,
         json: true
       };
 

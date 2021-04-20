@@ -7,8 +7,8 @@ const mainController = require('./../controllers/main.controller');
 
 
 
-router.get('/getCompanies', hubspotController.getCompanies);
-router.post('/register', hubspotController.createCompanies);
+router.get('/getCompanies', mainController.getCompanies);
+router.post('/register', mainController.createCompanie);
 router.get('/getToken', jasminController.getToken);
 router.get('/retornar', jasminController.retornar);
 

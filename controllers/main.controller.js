@@ -22,15 +22,15 @@ function getCompanies(request, response) {
 
 function createCompanie(request, response) {
     // const req = request;
-    hubspotController.createCompanies((request.body, res) => {
-        if(res.statusCode = 200){
-        response.status(200).send({
-            'user': res.body
-        })
-    } else {
-        response.status(res.statusCode).send(res.body);
-    }
-}
+    hubspotController.createCompanies(request.body, (res) => {
+        if (res.statusCode = 200) {
+            response.status(200).send({
+                'user': res.body
+            })
+        } else {
+            response.status(res.statusCode).send(res.body);
+        }
+    })
 }
 module.exports = {
     getCompanies: getCompanies,
