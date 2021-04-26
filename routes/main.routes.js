@@ -8,7 +8,11 @@ const mainController = require('./../controllers/main.controller');
 
 
 router.get('/getCompanies', mainController.getCompanies);
-router.post('/register', mainController.createCompanie);
+router.post('/register', mainController.registerCompanie);
+router.patch('/updateCompanie', mainController.updateCompanie);
+router.get('/exitsNif', mainController.existeNif);
+router.get('/verAttachments', mainController.verAtachemnts);
+router.post('/addFiles', mainController.addFiles);
 router.get('/getToken', jasminController.getToken);
 router.get('/retornar', jasminController.retornar);
 
