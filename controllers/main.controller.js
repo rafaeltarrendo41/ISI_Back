@@ -108,7 +108,7 @@ function addFiles(request, response) {
 function registerCompanie(req, response) {
     console.log(req);
     const email = req.body.properties.email;
-    const nome = req.body.properties.name;
+    const nome = req.body.properties.company;
     const pass = req.body.properties.pass;
     const nif = req.body.properties.numero_de_identificacao_fiscal;
     //const city = req.body.properties.city;
