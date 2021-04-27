@@ -88,8 +88,8 @@ function addFiles(request, response) {
                 'companieId': request.body.companieId,
                 'fileId': fileId
             }
-            hubspotController.createEngagement(options, (resp) =>{
-                if(resp.statusCode == 200){
+            hubspotController.createEngagement(options, (resp) => {
+                if (resp.statusCode == 200) {
                     response.status(resp.statusCode).send({
                         'anexos': true
                     })
@@ -118,10 +118,10 @@ function registerCompanie(req, response) {
     const hashPassword = async () => {
         const hash = await bCrypt.hash(pass, 10)
         passCripto = hash;
-       // console.log(await bcrypt.compare(password, hash))
-      }
-      
-      hashPassword()
+        // console.log(await bcrypt.compare(password, hash))
+    }
+
+    hashPassword()
     connect.query(`SELECT * FROM companies WHERE email='${email}'`, (err, rows, fields) => {
         if (!err) {
             if (rows.length == 0) {
@@ -143,7 +143,7 @@ function registerCompanie(req, response) {
                                     'numero_de_identificacao_fiscal': nif
                                 }
                             };
-                           
+
                             hubspotController.createCompanies(properties, (res) => {
                                 if (res.statusCode == 200) {
                                     const post = {
@@ -194,6 +194,45 @@ function registerCompanie(req, response) {
     })
 }
 
+function login(request, callback) {
+    const email = request.body.email;
+    const password = request.body.pass;
+    connect.query(`SELECT * FROM utilizador WHERE email='${email}'`, async (err, rows, fields) => {
+        if (!err) {
+            if (rows.length != 0) {
+                const user = rows[0];
+                if (await isValidPassword(user.password, password)) {
+                    if (user.verificado == true) {
+                        let userF = {
+                            user_id: user.idUtilizador,
+                            email: user.email,
+                            nome: user.nome,
+                            verificado: true
+                        }
+                        return done(null, userF);
+                    } else {
+                        done(null, false, {
+                            'message': `Utilizador não verificado`
+                        })
+                    }
+                } else {
+                    done(null, false, {
+                        'message': `Password Incorreta`
+                    })
+                }
+            } else {
+                done(null, false, {
+                    'message': `user not found`
+                })
+            }
+        } else {
+            done(null, false, {
+                'message': err.code
+            })
+        }
+    })
+}
+
 module.exports = {
     getCompanies: getCompanies,
     createCompanie: createCompanie,
@@ -201,5 +240,6 @@ module.exports = {
     existeNif: existeNif,
     verAtachemnts: verAtachemnts,
     registerCompanie: registerCompanie,
-    addFiles: addFiles
+    addFiles: addFiles,
+    login: login
 }
