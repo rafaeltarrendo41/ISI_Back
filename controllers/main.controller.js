@@ -3,6 +3,7 @@ const connect = require('./../config/dbConnection');
 const req = require('request');
 
 const hubspotController = require('./hubspot.controller');
+const jasminController = require('./jasmin.controller');
 
 function getCompanies(request, response) {
     hubspotController.getCompanies((res) => {
@@ -32,6 +33,7 @@ function createCompanie(request, response) {
         }
     })
 }
+
 module.exports = {
     getCompanies: getCompanies,
     createCompanie: createCompanie

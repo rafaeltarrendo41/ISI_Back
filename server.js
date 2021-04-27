@@ -10,7 +10,8 @@ const session = require('express-session');
 const passport = require('./config/passport');
 
 global.urlBase = `127.0.0.1`;
-global.urlFront = `https://wtransnet-face.herokuapp.com`
+global.urlFront = `https://wtransnet-face.herokuapp.com`;
+global.jasminUrl = `https://my.jasminsoftware.com/api/252605/252605-0001/`;
 
 
 
