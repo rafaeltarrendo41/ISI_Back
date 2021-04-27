@@ -140,7 +140,6 @@ function registerCompanie(req, response) {
                                     'name': nome,
                                     'email': email,
                                     'phone': contacto,
-                                    'city': city,
                                     'numero_de_identificacao_fiscal': nif
                                 }
                             };
