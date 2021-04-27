@@ -110,7 +110,7 @@ function registerCompanie(req, response) {
     const nome = req.body.properties.name;
     const pass = req.body.properties.pass;
     const nif = req.body.properties.numero_de_identificacao_fiscal;
-    const city = req.body.properties.city;
+    //const city = req.body.properties.city;
     const contacto = req.body.properties.phone;
 
     let passCripto = "";
