@@ -8,8 +8,9 @@ const mainController = require('./../controllers/main.controller');
 
 
 router.get('/getCompanies', mainController.getCompanies);
-router.post('/register', mainController.createCompanie);
+//router.post('/register', mainController.createCompanie);
 router.post('/register', mainController.registerCompanie);
+router.post('/login', mainController.login);
 router.patch('/updateCompanie', mainController.updateCompanie);
 router.get('/exitsNif', mainController.existeNif);
 router.get('/verAttachments', mainController.verAtachemnts);

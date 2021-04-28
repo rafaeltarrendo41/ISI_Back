@@ -89,8 +89,8 @@ function addFiles(request, response) {
                 'companieId': request.body.companieId,
                 'fileId': fileId
             }
-            hubspotController.createEngagement(options, (resp) =>{
-                if(resp.statusCode == 200){
+            hubspotController.createEngagement(options, (resp) => {
+                if (resp.statusCode == 200) {
                     response.status(resp.statusCode).send({
                         'anexos': true
                     })
@@ -107,21 +107,20 @@ function addFiles(request, response) {
 }
 
 function registerCompanie(req, response) {
+    console.log(req);
     const email = req.body.properties.email;
-    const nome = req.body.properties.name;
+    const nome = req.body.properties.company;
     const pass = req.body.properties.pass;
     const nif = req.body.properties.numero_de_identificacao_fiscal;
-    const city = req.body.properties.city;
     const contacto = req.body.properties.phone;
 
     let passCripto = "";
     const hashPassword = async () => {
         const hash = await bCrypt.hash(pass, 10)
         passCripto = hash;
-       // console.log(await bcrypt.compare(password, hash))
-      }
-      
-      hashPassword()
+    }
+
+    hashPassword()
     connect.query(`SELECT * FROM companies WHERE email='${email}'`, (err, rows, fields) => {
         if (!err) {
             if (rows.length == 0) {
@@ -140,11 +139,10 @@ function registerCompanie(req, response) {
                                     'name': nome,
                                     'email': email,
                                     'phone': contacto,
-                                    'city': city,
                                     'numero_de_identificacao_fiscal': nif
                                 }
                             };
-                           
+
                             hubspotController.createCompanies(properties, (res) => {
                                 if (res.statusCode == 200) {
                                     const post = {
@@ -209,7 +207,45 @@ function getProductsJ(response) {
             response.status(res.statusCode).send(res.body);
         }
     })
-
+}
+function login(request, response) {
+    const email = request.body.email;
+    const password = request.body.pass;
+    const passValidation = async function (userpass, password) {
+        return await bCrypt.compare(password, userpass);
+    }
+    connect.query(`SELECT * FROM companies WHERE email='${email}' and verificado='1'`, async (err, rows, fields) => {
+        if (!err) {
+            if (rows.length != 0) {
+                const user = rows[0];
+                if (await passValidation(user.pass, password)) {
+                    if (user.verificado == true) {
+                        let userF = {
+                            user_id: user.idUtilizador,
+                            email: user.email,
+                            nome: user.nome,
+                            verificado: true
+                        }
+                        response.status(200).send(userF);
+                    } else {
+                        done(null, false, {
+                            'message': `Utilizador não verificado`
+                        })
+                    }
+                } else {
+                    response.status(400).send({
+                        'message': `Password Incorreta`
+                    })
+                }
+            } else {
+                response.status(400).send({
+                    'message': `user not found`
+                })
+            }
+        } else {
+            response.status(400).send({err});
+        }
+    })
 }
 
 module.exports = {
@@ -220,5 +256,6 @@ module.exports = {
     verAtachemnts: verAtachemnts,
     registerCompanie: registerCompanie,
     addFiles: addFiles,
-    getProductsJ: getProductsJ
+    getProductsJ: getProductsJ,
+    login: login
 }
