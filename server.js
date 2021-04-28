@@ -32,12 +32,12 @@ app.use(bodyParser.json({
 app.set("trust proxy", 1);
 
 //CORS
-app.use('/', function(request, response, next){
-    response.header('Access-Control-Allow-Origin', urlFront);
-    response.header('Access-Control-Allow-Creditials', true);
-    response.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS, GET');
-    response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-})
+// app.use('/', function(request, response, next){
+//     response.header('Access-Control-Allow-Origin', urlFront);
+//     response.header('Access-Control-Allow-Creditials', true);
+//     response.header('Access-Control-Allow-Methods', 'PUT, POST, OPTIONS, GET');
+//     response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+// })
 
 
 //require('./routes/auth.routes')(app, passport);

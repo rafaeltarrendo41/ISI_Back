@@ -4,6 +4,7 @@ const req = require('request');
 
 const hubspotController = require('./hubspot.controller');
 const jasminController = require('./jasmin.controller');
+const moloniController = require('./moloni.controller');
 
 function getCompanies(request, response) {
     hubspotController.getCompanies((res) => {
@@ -194,6 +195,23 @@ function registerCompanie(req, response) {
     })
 }
 
+
+
+
+function getProductsJ(response) {
+    //console.log(request.body.properties.nif);
+    jasminController.getProducts((res) => {
+        if (res.statusCode == 200) {
+             const users = res.products;
+            response.status(res.statusCode).send(users.nome);
+
+        } else {
+            response.status(res.statusCode).send(res.body);
+        }
+    })
+
+}
+
 module.exports = {
     getCompanies: getCompanies,
     createCompanie: createCompanie,
@@ -201,5 +219,6 @@ module.exports = {
     existeNif: existeNif,
     verAtachemnts: verAtachemnts,
     registerCompanie: registerCompanie,
-    addFiles: addFiles
+    addFiles: addFiles,
+    getProductsJ: getProductsJ
 }

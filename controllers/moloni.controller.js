@@ -26,7 +26,7 @@ function retornar() {
     //  })
     // getNextNumber((res) => {
     //     console.log(res);
-    // // //  })
+    // // // //  })
     insertClient("293820317", "CLIENTPOSTMAN", "nada");
     
     
@@ -90,7 +90,6 @@ function insertProduct(nome, price, callback) {
 
 
 function insertClient(nif, nome, email, callback) {
-    console.log('aqui cona');
     getNextNumber((res) => {
         if (res.company_id) {
             const company_id = res.company_id;
@@ -140,7 +139,7 @@ function insertClient(nif, nome, email, callback) {
             }
             req.post(options, (err, res) => {
                 if (!err && res.statusCode == 200) {
-                    console.log(res);
+                    console.log(res.body);
                     callback({
                         'statusCode': res.statusCode,
                         'body': {
@@ -286,6 +285,7 @@ function getProducts(callback) {
             req.post(options, (err, res) => {
                 if (!err && res.statusCode == 200) {
                     let resp = JSON.parse(res.body);
+                    console.log(resp);
                     callback({
                         'products': resp,
                         'company_id': company_id,
@@ -407,6 +407,7 @@ function getToken(callback) {
         url: `https://api.moloni.pt/v1/grant/?grant_type=password&client_id=${process.env.MOLONI_CLIENTID}&client_secret=${process.env.MOLONI_SECRET}&username=${process.env.EMAIL_USERNAME}&password=${process.env.MOLONI_PASSWORD}`
     }
     req.get(options, (err, res) => {
+        console.log(res.body);
         if (!err && res.statusCode == 200) {
             callback({
                 'access_token': JSON.parse(res.body).access_token

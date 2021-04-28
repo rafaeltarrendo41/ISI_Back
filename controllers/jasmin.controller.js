@@ -38,9 +38,9 @@ function retornar() {
     // getToken((res) => {
     // console.log(res.access_token);
     // })
-    // getProducts((res) => {
-    //     console.log(res);
-    // })
+    getProducts((res) => {
+        console.log("Cona");
+    })
     // getMaterials((res) => {
     //     console.log(res);
     // })
@@ -73,13 +73,27 @@ function getProducts(callback) {
                 },
                 url: `https://my.jasminsoftware.com/api/252605/252605-0001/salesCore/salesItems`
             }
-            req.get(options, (err, res) => {
-                console.log(res.statusCode);
+            req.get(options, (err, res, body) => {
+                //console.log(res.body).results;
                 if (!err && res.statusCode == 200) {
-                    let resp = JSON.parse(res.body);
+                    // let resp = JSON.parse(res.body);
+                    const a  =  JSON.parse(body)
+                    ///.log(resp);
+                    var tamnho = Object.keys(a);
+                    console.log(tamnho.length);
+                    let produtos = [];
+                    for(let i = 0; i<tamnho.length; i++){
+                       //console.log(resp[i]);
+                        produtos.push({
+                            'nome': a[i].itemKey
+                        })
+                    }
+                    console.log(produtos);
                     callback({
-                        'products': resp
+                        'statusCode': 200,
+                        'products':produtos
                     });
+                   
                 } else {
                     callback({
                         'statusCode': res.statusCode,
@@ -362,10 +376,11 @@ function insertProduct(nome, callback) {
                                 }
                             })*/callback.status(200).send(res.body);
                         } else {
-                            callback({
-                                'statusCode': res.statusCode,
-                                'body': res.body
-                            })
+                            // callback({
+                            //     'statusCode': res.statusCode,
+                            //     'body': res.body
+                            // })
+                            callback.status(201).send(res.body);
                         }
                     })
                 } else {

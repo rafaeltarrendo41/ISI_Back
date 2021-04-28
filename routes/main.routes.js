@@ -14,6 +14,7 @@ router.patch('/updateCompanie', mainController.updateCompanie);
 router.get('/exitsNif', mainController.existeNif);
 router.get('/verAttachments', mainController.verAtachemnts);
 router.post('/addFiles', mainController.addFiles);
+
 router.get('/getToken', jasminController.getToken);
 router.get('/retornar', jasminController.retornar);
 
@@ -21,12 +22,13 @@ router.get('/retornarMOLONI', moloniController.retornar);
 router.get('/products', moloniController.getProducts); 
 router.get('/getCompany', moloniController.getCompany);
 router.get('/getCategory', moloniController.getCategory);
-
-router.post('/cona', moloniController.insertClientM);
+router.post('/insertClientMOLONI', moloniController.insertClientM);
 router.post('/insertProductMOLONI', moloniController.insertProduct);
+router.get('/getTokenMOLONI', moloniController.getToken);
 
 router.get('/retornar', jasminController.retornar);
 router.post('/insertClient', jasminController.insertClient);
 router.post('/insertProductJASMIN', jasminController.insertProduct);
+router.get('/getProductsJASMIN', mainController.getProductsJ);
 
 module.exports = router;
