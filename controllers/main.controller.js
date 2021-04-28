@@ -111,14 +111,12 @@ function registerCompanie(req, response) {
     const nome = req.body.properties.company;
     const pass = req.body.properties.pass;
     const nif = req.body.properties.numero_de_identificacao_fiscal;
-    //const city = req.body.properties.city;
     const contacto = req.body.properties.phone;
 
     let passCripto = "";
     const hashPassword = async () => {
         const hash = await bCrypt.hash(pass, 10)
         passCripto = hash;
-        // console.log(await bcrypt.compare(password, hash))
     }
 
     hashPassword()
@@ -194,14 +192,17 @@ function registerCompanie(req, response) {
     })
 }
 
-function login(request, callback) {
+function login(request, response) {
     const email = request.body.email;
     const password = request.body.pass;
-    connect.query(`SELECT * FROM utilizador WHERE email='${email}'`, async (err, rows, fields) => {
+    const passValidation = async function (userpass, password) {
+        return await bCrypt.compare(password, userpass);
+    }
+    connect.query(`SELECT * FROM companies WHERE email='${email}' and verificado='1'`, async (err, rows, fields) => {
         if (!err) {
             if (rows.length != 0) {
                 const user = rows[0];
-                if (await isValidPassword(user.password, password)) {
+                if (await passValidation(user.pass, password)) {
                     if (user.verificado == true) {
                         let userF = {
                             user_id: user.idUtilizador,
@@ -209,26 +210,24 @@ function login(request, callback) {
                             nome: user.nome,
                             verificado: true
                         }
-                        return done(null, userF);
+                        response.status(200).send(userF);
                     } else {
                         done(null, false, {
                             'message': `Utilizador não verificado`
                         })
                     }
                 } else {
-                    done(null, false, {
+                    response.status(400).send({
                         'message': `Password Incorreta`
                     })
                 }
             } else {
-                done(null, false, {
+                response.status(400).send({
                     'message': `user not found`
                 })
             }
         } else {
-            done(null, false, {
-                'message': err.code
-            })
+            response.status(400).send({err});
         }
     })
 }
