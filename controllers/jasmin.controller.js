@@ -384,10 +384,9 @@ function insertProduct(nome, callback) {
                         }
                     })
                 } else {
-                    callback({
-                        'statusCode': res.statusCode,
-                        'body': res.body
-                    })
+                    console.log(res.body);
+
+                    callback.status(400).send(err)
                 }
             })
         } else {
