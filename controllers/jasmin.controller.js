@@ -345,7 +345,7 @@ function insertProduct(nome, callback) {
                 'baseUnit': 'KG',
                 'itemType': 1
             };
-            console.log(json);
+            //console.log(json);
             let options = {
                 headers: {
                     'Authorization': `Bearer ${access_token}`,
@@ -357,7 +357,7 @@ function insertProduct(nome, callback) {
                 //body: json
             }
             req.post(options, (err, res) => {
-                console.log(res.statusCode);
+                console.log(res.body);
                 if (!err && res.statusCode == 201) {
                     const record_id = JSON.parse(res.body);
 
@@ -365,10 +365,11 @@ function insertProduct(nome, callback) {
                         headers: {
                             'Authorization': `Bearer ${access_token}`
                         },
-                        url: `${global.jasminUrl}alescore/salesItems/${record_id}`
+                        url: `${global.jasminUrl}salescore/salesItems/${record_id}`
                     }
                     req.get(options, (err, res) => {
                         if (!err && res.statusCode == 200) {
+                            console.log(res.body);
                             /*callback({
                                 'statusCode': res.statusCode,
                                 'body': {

@@ -223,7 +223,7 @@ function login(request, response) {
                 if (await passValidation(user.pass, password)) {
                     if (user.verificado == true) {
                         let userF = {
-                            user_id: user.idUtilizador,
+                            user_id: user.idcompanies,
                             email: user.email,
                             nome: user.nome,
                             verificado: true,
