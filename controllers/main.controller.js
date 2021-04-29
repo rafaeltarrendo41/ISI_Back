@@ -113,6 +113,7 @@ function registerCompanie(req, response) {
     const pass = req.body.properties.pass;
     const nif = req.body.properties.numero_de_identificacao_fiscal;
     const contacto = req.body.properties.phone;
+    const tipo = req.body.properties.tipo;
 
     let passCripto = "";
     const hashPassword = async () => {
@@ -148,7 +149,8 @@ function registerCompanie(req, response) {
                                     const post = {
                                         idcompanies: res.body.user_id,
                                         email: email,
-                                        pass: passCripto
+                                        pass: passCripto,
+                                        tipoEmpresa: tipo
                                     }
                                     connect.query('INSERT INTO companies SET ?', post, (err, rows, fields) => {
                                         if (!err) {
@@ -224,7 +226,8 @@ function login(request, response) {
                             user_id: user.idUtilizador,
                             email: user.email,
                             nome: user.nome,
-                            verificado: true
+                            verificado: true,
+                            tipo: user.tipoEmpresa
                         }
                         response.status(200).send(userF);
                     } else {
