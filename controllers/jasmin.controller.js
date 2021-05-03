@@ -360,34 +360,39 @@ function insertProduct(nome, callback) {
                 console.log(res.body);
                 if (!err && res.statusCode == 201) {
                     const record_id = JSON.parse(res.body);
-
-                    options = {
-                        headers: {
-                            'Authorization': `Bearer ${access_token}`
-                        },
-                        url: `${global.jasminUrl}salescore/salesItems/${record_id}`
-                    }
-                    req.get(options, (err, res) => {
-                        if (!err && res.statusCode == 200) {
-                            console.log(res.body);
-                            /*callback({
-                                'statusCode': res.statusCode,
-                                'body': {
-                                    customer_id: JSON.parse(res.body).partyKey
-                                }
-                            })*/callback.status(200).send(res.body);
-                        } else {
-                            // callback({
-                            //     'statusCode': res.statusCode,
-                            //     'body': res.body
-                            // })
-                            callback.status(201).send(res.body);
-                        }
+                    callback.status(201).send({
+                        'message': "criado",
+                        'body': record_id
                     })
+                    // options = {
+                    //     headers: {
+                    //         'Authorization': `Bearer ${access_token}`
+                    //     },
+                    //     url: `${global.jasminUrl}salescore/salesItems/${record_id}`
+                    // }
+                    // req.get(options, (err, res) => {
+                    //     if (!err && res.statusCode == 200) {
+                    //         console.log(res.body);
+                    //         /*callback({
+                    //             'statusCode': res.statusCode,
+                    //             'body': {
+                    //                 customer_id: JSON.parse(res.body).partyKey
+                    //             }
+                    //         })*/callback.status(200).send(res.body);
+                    //     } else {
+                    //         // callback({
+                    //         //     'statusCode': res.statusCode,
+                    //         //     'body': res.body
+                    //         // })
+                    //         callback.status(201).send(res.body);
+                    //     }
+                    // })
                 } else {
                     console.log(res.body);
 
-                    callback.status(400).send(err)
+                    callback.status(400).send({
+                        'message': "erro ao adicionar produto"
+                    })
                 }
             })
         } else {
