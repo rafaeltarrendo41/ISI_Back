@@ -191,7 +191,7 @@ function verAtachemnts(idCompanie, callback) {
         }
     })
 }
-function addFiles(callback) {
+function addFiles(file, callback) {
     var postUrl = `https://api.hubapi.com/filemanager/api/v3/files/upload?hapikey=${process.env.HUBSPOT_KEY}`;
 
     var filename = 'CAE.pdf'
@@ -205,7 +205,7 @@ function addFiles(callback) {
     };
 
     var formData = {
-        file: fs.createReadStream('ISI.pdf'),
+        file: fs.createReadStream(file),
         options: JSON.stringify(fileOptions),
         folderPath: 'docs'
     };

@@ -82,7 +82,8 @@ function verAtachemnts(request, response) {
 
 
 function addFiles(request, response) {
-    hubspotController.addFiles((res) => {
+    const file =  request.body.file;
+    hubspotController.addFiles(file, (res) => {
         if (res.statusCode == 200) {
             const fileId = res.body;
             var options = {
@@ -156,7 +157,8 @@ function registerCompanie(req, response) {
                                         if (!err) {
                                             response.status(200).send({
                                                 'body': {
-                                                    'message': 'User inserted with success'
+                                                    'message': 'User inserted with success',
+                                                    'id': res.body.user_id
                                                 }
                                             })
                                         } else {
