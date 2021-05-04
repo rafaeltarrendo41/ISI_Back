@@ -83,6 +83,7 @@ function verAtachemnts(request, response) {
 
 function addFiles(request, response) {
     const file =  request.body.file;
+    console.log(file);
     hubspotController.addFiles(file, (res) => {
         if (res.statusCode == 200) {
             const fileId = res.body;
