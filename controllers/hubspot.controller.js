@@ -217,7 +217,7 @@ function addFiles(file, callback) {
         const a = JSON.parse(body);
         const b = a.objects[0].id
         if (!err) {
-            callback({
+            callback.status(200).send({
                 'statusCode': 200,
                 'body': b
             })
