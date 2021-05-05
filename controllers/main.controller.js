@@ -88,7 +88,7 @@ function addFiles(request, response) {
         if (res.statusCode == 200) {
             const fileId = res.body;
             console.log(fileId);
-          response.sendStatus(200).send({
+            response.sendStatus(res.statusCode).send({
               'resposta': fileId
           })
         } else {
@@ -98,6 +98,8 @@ function addFiles(request, response) {
         }
     })
 }
+
+
 
 function registerCompanie(req, response) {
     //console.log(req);

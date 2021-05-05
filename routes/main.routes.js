@@ -15,6 +15,7 @@ router.patch('/updateCompanie', mainController.updateCompanie);
 router.get('/exitsNif', mainController.existeNif);
 router.get('/verAttachments', mainController.verAtachemnts);
 router.post('/addFiles', mainController.addFiles);
+router.post('/createEngagement', hubspotController.createEngagement);
 
 router.get('/getToken', jasminController.getToken);
 router.get('/retornar', jasminController.retornar);
