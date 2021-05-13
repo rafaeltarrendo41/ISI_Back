@@ -1,5 +1,6 @@
 const querystring = require('querystring');
 const req = require('request');
+const connect = require('./../config/dbConnection');
 
 
 
@@ -53,10 +54,10 @@ function retornar() {
     // getOrders((res) => {
     //     console.log(res);
     // })
-    
-    
-    
-    
+
+
+
+
 }
 
 
@@ -77,13 +78,13 @@ function getProducts(callback) {
                 //console.log(res.body).results;
                 if (!err && res.statusCode == 200) {
                     // let resp = JSON.parse(res.body);
-                    const a  =  JSON.parse(body)
+                    const a = JSON.parse(body)
                     ///.log(resp);
                     var tamnho = Object.keys(a);
                     console.log(tamnho.length);
                     let produtos = [];
-                    for(let i = 0; i<tamnho.length; i++){
-                       //console.log(resp[i]);
+                    for (let i = 0; i < tamnho.length; i++) {
+                        //console.log(resp[i]);
                         produtos.push({
                             'nome': a[i].itemKey
                         })
@@ -91,9 +92,9 @@ function getProducts(callback) {
                     console.log(produtos);
                     callback({
                         'statusCode': 200,
-                        'products':produtos
+                        'products': produtos
                     });
-                   
+
                 } else {
                     callback({
                         'statusCode': res.statusCode,
@@ -329,79 +330,101 @@ function insertClient(nome, callback) {
 }
 
 function insertProduct(nome, callback) {
-    console.log(nome.body);
-    getToken((res) => {
-        if (res.access_token) {
-            const access_token = res.access_token;
+    const post = {
+        criador: nome.body.user_id,
+        origem: email,
+        especialidade: passCripto,
+        peso: tipo
+    }
+    connect.query('INSERT INTO cargas SET ?', post, (err, rows, fields) => {
+        if (!err) {
+            connect.query(`SELECT * FROM cargas WHERE ?`, post, (err, rows, fields) => {
+                console.log(rows);
+                //console.log(nome.body);
+                getToken((res) => {
+                    if (res.access_token) {
+                        const access_token = res.access_token;
 
-            const json = {
-                'unit': 'KG',
-                'itemTaxSchema': 'NORMAL',
-                'incomeAccount': '71111',
-                'locked': false,
-                'itemKey': nome.body.itemKey,
-                'description': nome.body.description,
-                'isExternallyManaged': false,
-                'baseUnit': 'KG',
-                'itemType': 1
-            };
-            //console.log(json);
-            let options = {
-                headers: {
-                    'Authorization': `Bearer ${access_token}`,
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Content-Length': JSON.stringify(json).length
-                },
-                url: `${global.jasminUrl}salescore/salesItems`,
-                body: JSON.stringify(json)
-                //body: json
-            }
-            req.post(options, (err, res) => {
-                console.log(res.body);
-                if (!err && res.statusCode == 201) {
-                    const record_id = JSON.parse(res.body);
-                    callback.status(201).send({
-                        'message': "criado",
-                        'body': record_id
-                    })
-                    // options = {
-                    //     headers: {
-                    //         'Authorization': `Bearer ${access_token}`
-                    //     },
-                    //     url: `${global.jasminUrl}salescore/salesItems/${record_id}`
-                    // }
-                    // req.get(options, (err, res) => {
-                    //     if (!err && res.statusCode == 200) {
-                    //         console.log(res.body);
-                    //         /*callback({
-                    //             'statusCode': res.statusCode,
-                    //             'body': {
-                    //                 customer_id: JSON.parse(res.body).partyKey
-                    //             }
-                    //         })*/callback.status(200).send(res.body);
-                    //     } else {
-                    //         // callback({
-                    //         //     'statusCode': res.statusCode,
-                    //         //     'body': res.body
-                    //         // })
-                    //         callback.status(201).send(res.body);
-                    //     }
-                    // })
-                } else {
-                    console.log(res.body);
+                        const json = {
+                            'unit': 'KG',
+                            'itemTaxSchema': 'NORMAL',
+                            'incomeAccount': '71111',
+                            'locked': false,
+                            'itemKey': rows.idCargas,
+                            'description': nome.body.description,
+                            'isExternallyManaged': false,
+                            'baseUnit': 'KG',
+                            'itemType': 1
+                        };
+                        //console.log(json);
+                        let options = {
+                            headers: {
+                                'Authorization': `Bearer ${access_token}`,
+                                'Content-Type': 'application/json; charset=utf-8',
+                                'Content-Length': JSON.stringify(json).length
+                            },
+                            url: `${global.jasminUrl}salescore/salesItems`,
+                            body: JSON.stringify(json)
+                            //body: json
+                        }
+                        req.post(options, (err, res) => {
+                            console.log(res.body);
+                            if (!err && res.statusCode == 201) {
+                                const record_id = JSON.parse(res.body);
+                                callback.status(201).send({
+                                    'message': "criado",
+                                    'body': record_id
+                                })
+                                // options = {
+                                //     headers: {
+                                //         'Authorization': `Bearer ${access_token}`
+                                //     },
+                                //     url: `${global.jasminUrl}salescore/salesItems/${record_id}`
+                                // }
+                                // req.get(options, (err, res) => {
+                                //     if (!err && res.statusCode == 200) {
+                                //         console.log(res.body);
+                                //         /*callback({
+                                //             'statusCode': res.statusCode,
+                                //             'body': {
+                                //                 customer_id: JSON.parse(res.body).partyKey
+                                //             }
+                                //         })*/callback.status(200).send(res.body);
+                                //     } else {
+                                //         // callback({
+                                //         //     'statusCode': res.statusCode,
+                                //         //     'body': res.body
+                                //         // })
+                                //         callback.status(201).send(res.body);
+                                //     }
+                                // })
+                            } else {
+                                console.log(res.body);
 
-                    callback.status(400).send({
-                        'message': "erro ao adicionar produto"
-                    })
-                }
+                                callback.status(400).send({
+                                    'message': "erro ao adicionar produto"
+                                })
+                            }
+                        })
+                    } else {
+                        callback({
+                            'statusCode': res.statusCode,
+                            'body': res.body
+                        })
+                    }
+                })
+
             })
         } else {
-            callback({
-                'statusCode': res.statusCode,
-                'body': res.body
+            response.status(400).send({
+                'body': {
+                    'message': 'User not create'
+                }
             })
         }
     })
+
+
 }
 
 

@@ -69,9 +69,17 @@ function verAtachemnts(request, response) {
     hubspotController.verAtachemnts(request.body.idCompanie, (res) => {
         if (res.anexos) {
             const users = res.anexos;
+            var tamanho = Object.keys(users);
+            console.log(tamanho.length);
+            let usersF = [];
+            for (let i = 0; i < tamanho.length; i++) {
+                usersF.push({
+                    'id': users[i].url
+                })
+            }
             response.status(200).send({
-                'anexos': users
-            })
+                usersF
+            });
 
         } else {
             response.status(res.statusCode).send(res.body);
@@ -89,8 +97,8 @@ function addFiles(request, response) {
             const fileId = res.body;
             console.log(fileId);
             response.sendStatus(res.statusCode).send({
-              'resposta': fileId
-          })
+                'resposta': fileId
+            })
         } else {
             response.sendStatus(res.statusCode).send({
                 'resposta': res.body
@@ -99,6 +107,61 @@ function addFiles(request, response) {
     })
 }
 
+function precisaValidacao(req, response) {
+    connect.query(`SELECT * FROM companies WHERE verificado = false`, (err, rows, fields) => {
+        if (!err) {
+            if (rows.length == 0) {
+                response.status(200).send({
+                    'rows': "nenhum"
+                });
+            } else {
+                let usersF = [];
+                for (let i = 0; i < rows.length; i++) {
+                    hubspotController.verAtachemnts(rows[i].idcompanies, async (res) => {
+                        if (res.anexos) {
+                            var users = res.anexos;
+                            usersF.push({
+                                'url': users[0].url,
+                                'idCompanie': rows[i].idcompanies,
+                                'type': rows[i].tipoEmpresa
+                            })
+                        } else {
+                            usersF.push({
+                                'url': '',
+                                'idCompanie': rows[i].idcompanies,
+                                'type': rows[i].tipoEmpresa
+                            })
+                        }
+
+                        //console.log(usersF.length);
+                        if (usersF.length == rows.length) {
+                            console.log(usersF);
+                            response.status(200).send(usersF);
+                        }
+                    })
+                }
+            }
+        } else {
+            response.status(400).send(err);
+        }
+    })
+}
+
+function validarCompanies(request, response){
+    const idCompanie = request.body.idCompanie;
+
+    connect.query(`UPDATE companies SET verificado = 1 WHERE idcompanies = ${idCompanie}`, (err, rows, fields) => {
+        if(!err){
+            response.status(200).send({
+                'verificado': true
+            })
+        } else {
+            response.status(400).send({
+                'verificado': false
+            })
+        }
+    })
+}
 
 
 function registerCompanie(req, response) {
@@ -198,7 +261,7 @@ function getProductsJ(response) {
     //console.log(request.body.properties.nif);
     jasminController.getProducts((res) => {
         if (res.statusCode == 200) {
-             const users = res.products;
+            const users = res.products;
             response.status(res.statusCode).send(users.nome);
 
         } else {
@@ -242,7 +305,7 @@ function login(request, response) {
                 })
             }
         } else {
-            response.status(400).send({err});
+            response.status(400).send({ err });
         }
     })
 }
@@ -256,5 +319,7 @@ module.exports = {
     registerCompanie: registerCompanie,
     addFiles: addFiles,
     getProductsJ: getProductsJ,
-    login: login
+    login: login,
+    precisaValidacao: precisaValidacao,
+    validarCompanies: validarCompanies
 }

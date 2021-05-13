@@ -163,18 +163,20 @@ function verAtachemnts(idCompanie, callback) {
         if (!err) {
             if (res.statusCode == 200) {
                 const anexos = JSON.parse(res.body).results;
-                console.log(anexos);
+                //console.log(anexos);
                 var urlAnexos = []
+                var url = []
                 var tamanho = Object.keys(anexos);
                 for (let i = 0; i < tamanho.length; i++) {
                     urlAnexos.push({
-                        'url': anexos[i].attachments
+                        'url': anexos[i].attachments[0].id
                     })
+
                 }
                 callback({
                     anexos: urlAnexos
                 })
-                console.log(urlAnexos.id);
+                
             } else {
                 callback({
                     'statusCode': res.statusCode,
