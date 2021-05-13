@@ -337,7 +337,7 @@ function insertProduct(nome, callback) {
         especialidade: nome.body.especialidade,
         peso: nome.body.peso
     }
-    connect.query('INSERT INTO cargas SET ?', post, (err, rows, fields) => {
+    connect.query('INSERT INTO carga SET ?', post, (err, rows, fields) => {
         if (!err) {
             connect.query(`SELECT * FROM cargas WHERE ?`, post, (err, rows, fields) => {
                 console.log(rows);
