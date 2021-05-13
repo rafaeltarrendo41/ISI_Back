@@ -331,11 +331,11 @@ function insertClient(nome, callback) {
 
 function insertProduct(nome, callback) {
     const post = {
-        criador: nome.user_id,
-        origem: nome.origem,
-        destino: nome.destino,
-        especialidade: nome.especialidade,
-        peso: nome.peso
+        criador: nome.body.user_id,
+        origem: nome.body.origem,
+        destino: nome.body.destino,
+        especialidade: nome.body.especialidade,
+        peso: nome.body.peso
     }
     connect.query('INSERT INTO cargas SET ?', post, (err, rows, fields) => {
         if (!err) {
