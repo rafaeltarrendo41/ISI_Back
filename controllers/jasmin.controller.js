@@ -339,9 +339,8 @@ function insertProduct(nome, callback) {
     }
     connect.query('INSERT INTO carga SET ?', post, (err, rows, fields) => {
         if (!err) {
-            connect.query(`SELECT * FROM cargas WHERE ?`, post, (err, rows, fields) => {
-                console.log(rows);
-                //console.log(nome.body);
+            connect.query(`SELECT * FROM carga WHERE criador=${nome.body.user_id} AND origem="${nome.body.origem}" AND destino="${nome.body.destino}" AND especialidade="${nome.body.especialidade}" AND peso="${nome.body.peso}"`, async (err, rows, fields) => {
+                const carga = rows[0];
                 getToken((res) => {
                     if (res.access_token) {
                         const access_token = res.access_token;
@@ -351,8 +350,8 @@ function insertProduct(nome, callback) {
                             'itemTaxSchema': 'NORMAL',
                             'incomeAccount': '71111',
                             'locked': false,
-                            'itemKey': rows.idCargas,
-                            'description': nome.body.description,
+                            'itemKey': carga.idCargas,
+                            'description': nome.body.especialidade,
                             'isExternallyManaged': false,
                             'baseUnit': 'KG',
                             'itemType': 1
@@ -376,29 +375,7 @@ function insertProduct(nome, callback) {
                                     'message': "criado",
                                     'body': record_id
                                 })
-                                // options = {
-                                //     headers: {
-                                //         'Authorization': `Bearer ${access_token}`
-                                //     },
-                                //     url: `${global.jasminUrl}salescore/salesItems/${record_id}`
-                                // }
-                                // req.get(options, (err, res) => {
-                                //     if (!err && res.statusCode == 200) {
-                                //         console.log(res.body);
-                                //         /*callback({
-                                //             'statusCode': res.statusCode,
-                                //             'body': {
-                                //                 customer_id: JSON.parse(res.body).partyKey
-                                //             }
-                                //         })*/callback.status(200).send(res.body);
-                                //     } else {
-                                //         // callback({
-                                //         //     'statusCode': res.statusCode,
-                                //         //     'body': res.body
-                                //         // })
-                                //         callback.status(201).send(res.body);
-                                //     }
-                                // })
+                             
                             } else {
                                 console.log(res.body);
 

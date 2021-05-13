@@ -32,7 +32,7 @@ function retornar() {
     
 }
 
-function insertProduct(nome, price, callback) {
+function insertProduct(nome, callback) {
     getNextNumber((res) => {
         if (res.company_id) {
             const company_id = res.company_id;
@@ -47,7 +47,7 @@ function insertProduct(nome, price, callback) {
                 type: type,
                 name: nome,
                 reference: '',
-                price: price,
+                price: '',
                 unit_id : 1,
                 has_stock: 0,
                 stock: 0,
