@@ -269,6 +269,20 @@ function getProductsJ(response) {
         }
     })
 }
+
+function getCargas(response) {
+    connect.query(`SELECT * FROM carga WHERE comprador=0`, async(err, rows, fields) => {
+        if(!err){
+            response.status(200).send({
+                'body': rows
+            })
+        }else{
+            response.status(400).send({
+                'body': err
+            })
+        }
+    })
+}
 function login(request, response) {
     const email = request.body.email;
     const password = request.body.pass;

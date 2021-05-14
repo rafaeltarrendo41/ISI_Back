@@ -1,5 +1,6 @@
 const querystring = require('querystring');
 const req = require('request');
+const connect = require('./../config/dbConnection');
 
 
 
@@ -28,65 +29,90 @@ function retornar() {
     //     console.log(res);
     // // // //  })
     insertClient("293820317", "CLIENTPOSTMAN", "nada");
-    
-    
+
+
 }
 
 function insertProduct(nome, callback) {
-    getNextNumber((res) => {
-        if (res.company_id) {
-            const company_id = res.company_id;
-            const category_id = res.category_id;
-            const type = res.type;
-            const access_token = res.access_token;
-
-
-            const json = querystring.stringify({
-                company_id: company_id,
-                category_id: category_id,
-                type: type,
-                name: nome,
-                reference: '',
-                price: '',
-                unit_id : 1,
-                has_stock: 0,
-                stock: 0,
-
-            })
-
-
-            let options = {
-                headers: {
-                    'Content-Length': json.length,
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                url: `https://api.moloni.pt/v1/products/insert/?access_token=${access_token}`,
-                body: json
-            }
-            req.post(options, (err, res) => {
-                if (!err && res.statusCode == 200) {
+    const post = {
+        criador: nome.body.user_id,
+        origem: nome.body.origem,
+        destino: nome.body.destino,
+        especialidade: nome.body.especialidade,
+        peso: nome.body.peso
+    }
+    connect.query('INSERT INTO transporte SET ?', post, (err, rows, fields) => {
+        if (!err) {
+            connect.query(`SELECT * FROM transporte WHERE criador=${nome.body.user_id} AND origem="${nome.body.origem}" AND destino="${nome.body.destino}" AND especialidade="${nome.body.especialidade}" AND peso="${nome.body.peso}"`, async (err, rows, fields) => {
+                const carga = rows[0];
+                console.log(carga.idtransporte);
+                getNextNumber((res) => {
                     console.log(res);
-                    callback({
-                        'statusCode': res.statusCode,
-                        'body': {
-                            customer_id: JSON.parse(res.body).customer_id
+                    if (res.company_id) {
+                        const company_id = res.company_id;
+                        const category_id = 3700122;
+                        const type = 1;
+                        const access_token = res.access_token;
+
+
+                        const json = querystring.stringify({
+                            company_id: company_id,
+                            category_id: category_id,
+                            type: type,
+                            name: carga.idtransporte,
+                            reference: '',
+                            price: '',
+                            unit_id: 1,
+                            has_stock: 0,
+                            stock: 0,
+
+                        })
+
+                        console.log(json);
+                        let options = {
+                            headers: {
+                                'Content-Length': json.length,
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            url: `https://api.moloni.pt/v1/products/insert/?access_token=${access_token}`,
+                            body: json
                         }
-                    })
-                } else {
-                    callback({
-                        'statusCode': res.statusCode,
-                        'body': JSON.parse(res.body)
-                    })
-                }
+                        req.post(options, (err, res) => {
+                            if (!err && res.statusCode == 200) {
+                                console.log(res);
+                                callback.status(200).send({
+                                    'body': {
+                                        customer_id: JSON.parse(res.body).customer_id
+                                    }
+                                })
+                                console.log(JSON.parse(res.body).customer_id);
+                            } else {
+                                callback.status(400).send({
+                                    'body': JSON.parse(res.body)
+                                })
+                            }
+                        })
+                    } else {
+                        callback.status(400).send({
+                            'body': res.body
+                        });
+                    }
+                })
+
             })
         } else {
-            callback({
-                'statusCode': res.statusCode,
-                'body': res.body
+            callback.status(400).send({
+                'body': err
             });
         }
     })
 }
+
+
+
+
+
+
 
 
 function insertClient(nif, nome, email, callback) {
@@ -124,7 +150,7 @@ function insertClient(nif, nome, email, callback) {
                 payment_method_id: 0,
                 delivery_method_id: 0,
                 field_notes: '',
-                document_type_id:1,
+                document_type_id: 1,
                 copies: 1
             })
 
@@ -219,7 +245,7 @@ function getPurchases(customer_id, callback) {
                 your_reference: '',
                 our_reference: ''
             });
-            
+
             let options = {
                 headers: {
                     'Content-Length': json.length,
@@ -332,7 +358,8 @@ function getCategory(callback) {
                     for (let i = 0; i < resBody.length; i++) {
                         if (resBody[i].name == 'Transportes') {
                             category_id = resBody[i].category_id,
-                            nameC = resBody[i].name
+                                nameC = resBody[i].name
+                                console.log(category_id);
                         }
                     }
                     callback({

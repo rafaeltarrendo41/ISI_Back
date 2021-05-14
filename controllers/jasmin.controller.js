@@ -394,9 +394,9 @@ function insertProduct(nome, callback) {
 
             })
         } else {
-            response.status(400).send({
+            callback.status(400).send({
                 'body': {
-                    'message': 'User not create'
+                    'message': err
                 }
             })
         }
