@@ -283,6 +283,21 @@ function getCargas(response) {
         }
     })
 }
+
+function getTransportes(response) {
+    connect.query(`SELECT * FROM transporte WHERE comprador=0`, async(err, rows, fields) => {
+        if(!err){
+            response.status(200).send({
+                'body': rows
+            })
+        }else{
+            response.status(400).send({
+                'body': err
+            })
+        }
+    })
+}
+
 function login(request, response) {
     const email = request.body.email;
     const password = request.body.pass;
@@ -335,5 +350,7 @@ module.exports = {
     getProductsJ: getProductsJ,
     login: login,
     precisaValidacao: precisaValidacao,
-    validarCompanies: validarCompanies
+    validarCompanies: validarCompanies,
+    getCargas: getCargas,
+    getTransportes: getTransportes
 }

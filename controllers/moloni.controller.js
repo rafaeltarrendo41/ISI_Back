@@ -60,12 +60,12 @@ function insertProduct(nome, callback) {
                             category_id: category_id,
                             type: type,
                             name: carga.idtransporte,
-                            reference: '',
-                            price: '',
-                            unit_id: 1,
+                            reference: carga.idtransporte,
+                            price: 0.0,
+                            unit_id: 1578589,
                             has_stock: 0,
                             stock: 0,
-
+                            exemption_reason:0
                         })
 
                         console.log(json);
@@ -79,21 +79,22 @@ function insertProduct(nome, callback) {
                         }
                         req.post(options, (err, res) => {
                             if (!err && res.statusCode == 200) {
-                                console.log(res);
+                                console.log(res.statusCode);
                                 callback.status(200).send({
-                                    'body': {
-                                        customer_id: JSON.parse(res.body).customer_id
-                                    }
+                                    'result': 'criado',
+                                    'body': JSON.parse(res.body)
                                 })
-                                console.log(JSON.parse(res.body).customer_id);
+                                //console.log(JSON.parse(res.body).customer_id);
                             } else {
                                 callback.status(400).send({
+                                    'result': 'erro moloni',
                                     'body': JSON.parse(res.body)
                                 })
                             }
                         })
                     } else {
                         callback.status(400).send({
+                            'result': 'erro bd',
                             'body': res.body
                         });
                     }
@@ -312,23 +313,23 @@ function getProducts(callback) {
                 if (!err && res.statusCode == 200) {
                     let resp = JSON.parse(res.body);
                     console.log(resp);
-                    callback({
-                        'products': resp,
-                        'company_id': company_id,
-                        'access_token': access_token
-                    });
+                    // callback({
+                    //     'products': resp,
+                    //     'company_id': company_id,
+                    //     'access_token': access_token
+                    // });
                 } else {
-                    callback({
-                        'statusCode': res.statusCode,
-                        'body': JSON.parse(res.body)
-                    });
+                    // callback({
+                    //     'statusCode': res.statusCode,
+                    //     'body': JSON.parse(res.body)
+                    // });
                 }
             })
         } else {
-            callback({
-                'statusCode': res.statusCode,
-                'body': res.body
-            });
+            // callback({
+            //     'statusCode': res.statusCode,
+            //     'body': res.body
+            // });
         }
     })
 }
@@ -359,7 +360,7 @@ function getCategory(callback) {
                         if (resBody[i].name == 'Transportes') {
                             category_id = resBody[i].category_id,
                                 nameC = resBody[i].name
-                                console.log(category_id);
+                            console.log(category_id);
                         }
                     }
                     callback({
