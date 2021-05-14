@@ -270,7 +270,7 @@ function getProductsJ(response) {
     })
 }
 
-function getCargas(response) {
+function getCargas(rq, response) {
     connect.query(`SELECT * FROM carga WHERE comprador=0`, async(err, rows, fields) => {
         if(!err){
             response.status(200).send({
@@ -284,7 +284,7 @@ function getCargas(response) {
     })
 }
 
-function getTransportes(response) {
+function getTransportes(req, response) {
     connect.query(`SELECT * FROM transporte WHERE comprador=0`, async(err, rows, fields) => {
         if(!err){
             response.status(200).send({
