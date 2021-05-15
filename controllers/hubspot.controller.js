@@ -165,16 +165,14 @@ function verAtachemnts(idCompanie, callback) {
         if (!err) {
             if (res.statusCode == 200) {
                 const anexos = JSON.parse(res.body).results;
-                console.log(anexos);
+                const indice = anexos.length - 1;
+                console.log(indice);
                 var urlAnexos = []
-                var url = []
-                var tamanho = Object.keys(anexos);
-                for (let i = 0; i < tamanho.length; i++) {
-                    urlAnexos.push({
-                        'url': anexos[i].attachments[0].id
-                    })
+                urlAnexos.push({
+                    'url': anexos[indice].attachments[0].id
+                })
 
-                }
+
                 callback({
                     anexos: urlAnexos
                 })
@@ -284,7 +282,7 @@ function createEngagement(req, callback) {
     })
 }
 
-function addDeal( callback) {
+function addDeal(callback) {
     // const associatedV = request.companieID;
     // const associatedC = require.CompradorID;
     // const cargaID = request.cargaID;
@@ -324,31 +322,31 @@ function addDeal( callback) {
         if (error) throw new Error(error);
 
         console.log(response.statusCode);
-        if(response.statusCode == 200){
-            if(carga){
+        if (response.statusCode == 200) {
+            if (carga) {
                 connection.query(`UPDATE carga SET comprador=${associatedC}, idVenda=${body.dealId} WHERE idCargas=${cargaID}`, async (err, rows) => {
-                    if(!err){
+                    if (!err) {
                         callback({
-                            'statusCode':200,
+                            'statusCode': 200,
                             'message': 'deal criado'
                         })
                     } else {
                         callback({
-                            'statusCode':400,
+                            'statusCode': 400,
                             'message': 'deal n criado bd'
                         })
                     }
                 })
-            }else{
+            } else {
                 connection.query(`UPDATE transporte SET comprador=${associatedC}, idVenda=${body.dealId} WHERE idCargas=${cargaID}`, async (err, rows) => {
-                    if(!err){
+                    if (!err) {
                         callback({
-                            'statusCode':200,
+                            'statusCode': 200,
                             'message': 'deal criado'
                         })
                     } else {
                         callback({
-                            'statusCode':400,
+                            'statusCode': 400,
                             'message': 'deal n criado bd'
                         })
                     }
