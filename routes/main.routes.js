@@ -20,6 +20,7 @@ router.get('/precisaValidar', mainController.precisaValidacao);
 router.post('/validarCompanie', mainController.validarCompanies);
 router.get('/getCargas', mainController.getCargas);
 router.get('/getTransportes', mainController.getTransportes);
+router.post('/addDeal', hubspotController.addDeal);
 
 router.get('/getToken', jasminController.getToken);
 router.get('/retornar', jasminController.retornar);

@@ -123,13 +123,15 @@ function precisaValidacao(req, response) {
                             usersF.push({
                                 'url': users[0].url,
                                 'idCompanie': rows[i].idcompanies,
-                                'type': rows[i].tipoEmpresa
+                                'type': rows[i].tipoEmpresa,
+                                'email': rows[i].email
                             })
                         } else {
                             usersF.push({
                                 'url': '',
                                 'idCompanie': rows[i].idcompanies,
-                                'type': rows[i].tipoEmpresa
+                                'type': rows[i].tipoEmpresa,
+                                'email': rows[i].email
                             })
                         }
 
@@ -161,6 +163,10 @@ function validarCompanies(request, response){
             })
         }
     })
+}
+
+function recusarCompanie(request, response){
+
 }
 
 
