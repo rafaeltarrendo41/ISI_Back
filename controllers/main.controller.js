@@ -93,7 +93,7 @@ function verAtachemnts(request, response) {
 function addFiles(request, response) {
     //const file =  request.body.file;
     console.log(request);
-    hubspotController.addFiles(request, (res) => {
+    hubspotController.addFiles(request.body, (res) => {
         if (res.statusCode == 200) {
             const fileId = res.body;
             console.log(fileId);
@@ -164,9 +164,6 @@ function validarCompanies(request, response) {
             <center><a href='https://wtransnet-face.herokuapp.com/login'><button type='button'>Aceder a Conta</button></a></center><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/login <br><br>`;
 
-            // let testAccount = nodemailer.createTestAccount();
-
-            //console.log(testAccount);
 
             const aceitar = nodemailer.createTransport({
                 service: 'gmail',
@@ -191,7 +188,6 @@ function validarCompanies(request, response) {
                 html: bodycontent
             };
             aceitar.sendMail(mailOptions, function (error, info) {
-                console.log("AQUIII")
                 if (error) {
                     response.status(400).send({
                         'verificado': false,

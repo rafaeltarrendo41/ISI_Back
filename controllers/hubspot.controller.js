@@ -214,7 +214,7 @@ function addFiles(file, callback) {
 
     request.post({
         url: postUrl,
-        formData: formData
+        formData: file
     }, function optionalCallback(err, httpResponse, body, id) {
         const a = JSON.parse(body);
         const b = a.objects[0].id
