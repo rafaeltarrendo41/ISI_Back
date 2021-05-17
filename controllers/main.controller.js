@@ -1,6 +1,7 @@
 const bCrypt = require('bcryptjs');
 const connect = require('./../config/dbConnection');
 const req = require('request');
+const nodemailer = require('nodemailer');
 
 const hubspotController = require('./hubspot.controller');
 const jasminController = require('./jasmin.controller');
@@ -151,12 +152,61 @@ function precisaValidacao(req, response) {
 
 function validarCompanies(request, response){
     const idCompanie = request.body.idCompanie;
+    const email = request.body.email;
 
     connect.query(`UPDATE companies SET verificado = 1 WHERE idcompanies = ${idCompanie}`, (err, rows, fields) => {
         if(!err){
             response.status(200).send({
                 'verificado': true
             })
+            let bodycontent = `Olá caro utilizador, <br> <br>
+            A sua conta acabou de ser verificada, a partir deste momento já pode aceder a ela, quando desejar! <br>
+            <center><a href='https://wtransnet-face.herokuapp.com/login'><button type='button'>Aceder a Conta</button></a></center><br><br>`;
+
+            const aceitar = nodemailer.createTransport({
+                host: "smtp.ethereal.email",
+                port: 587,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                  user: process.env.MAIL_USER, // generated ethereal user
+                  pass: process.env.MAIL_PASS, // generated ethereal password
+                },
+            })
+
+            aceitar.verify(function (error, success) {
+                if (error) {
+                    response.status(400).send({
+                        'message': "Can't send email",
+                        'error': error
+                    });
+                } else {
+                    const mailOptions = {
+                        'from': {
+                            'name': 'Wtransnet',
+                            'address': process.env.MAIL_USER
+                        },
+                        'to': {
+                            'name': `Cliente ${idCompanie}`,
+                            'address': email
+                        },
+                        'subject': 'Validação da conta',
+                        'html': bodycontent
+                    };
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            response.status(400).send({
+                                'message': "Can't send email",
+                                'error': error
+                            });
+                        } else {
+                            response.status(200).send({
+                                'message': 'mail sent'
+                            });
+                        }
+                    });
+                }
+            })
+           
         } else {
             response.status(400).send({
                 'verificado': false
