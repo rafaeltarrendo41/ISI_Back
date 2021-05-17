@@ -18,6 +18,7 @@ router.post('/addFiles', mainController.addFiles);
 router.post('/createEngagement', hubspotController.createEngagement);
 router.get('/precisaValidar', mainController.precisaValidacao);
 router.post('/validarCompanie', mainController.validarCompanies);
+router.post('/recusarCompanie', mainController.recusarCompanie);
 router.get('/getCargas', mainController.getCargas);
 router.get('/getTransportes', mainController.getTransportes);
 router.post('/addDeal', hubspotController.addDeal);

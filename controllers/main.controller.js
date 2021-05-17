@@ -150,63 +150,63 @@ function precisaValidacao(req, response) {
     })
 }
 
-function validarCompanies(request, response){
+function validarCompanies(request, response) {
     const idCompanie = request.body.idCompanie;
     const email = request.body.email;
 
     connect.query(`UPDATE companies SET verificado = 1 WHERE idcompanies = ${idCompanie}`, (err, rows, fields) => {
-        if(!err){
-            response.status(200).send({
-                'verificado': true
-            })
+        if (!err) {
+            // response.status(200).send({
+            //     'verificado': true
+            // })
             let bodycontent = `Olá caro utilizador, <br> <br>
             A sua conta acabou de ser verificada, a partir deste momento já pode aceder a ela, quando desejar! <br>
-            <center><a href='https://wtransnet-face.herokuapp.com/login'><button type='button'>Aceder a Conta</button></a></center><br><br>`;
+            <center><a href='https://wtransnet-face.herokuapp.com/login'><button type='button'>Aceder a Conta</button></a></center><br><br>
+            Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/login <br><br>`;
+
+            // let testAccount = nodemailer.createTestAccount();
+
+            //console.log(testAccount);
 
             const aceitar = nodemailer.createTransport({
-                host: "smtp.ethereal.email",
-                port: 587,
-                secure: false, // true for 465, false for other ports
+                service: 'gmail',
+                host: `smtp.gmail.com`,
                 auth: {
-                  user: process.env.MAIL_USER, // generated ethereal user
-                  pass: process.env.MAIL_PASS, // generated ethereal password
-                },
+                    user: process.env.MAIL_USER, // generated ethereal user
+                    pass: process.env.MAIL_PASS, // generated ethereal password
+                }
             })
 
-            aceitar.verify(function (error, success) {
+
+            const mailOptions = {
+                from: {
+                    'name': 'Wtransnet',
+                    'address': process.env.MAIL_USER
+                },
+                to: {
+                    'name': `Cliente ${idCompanie}`,
+                    'address': email
+                },
+                subject: 'Validação da conta',
+                html: bodycontent
+            };
+            aceitar.sendMail(mailOptions, function (error, info) {
+                console.log("AQUIII")
                 if (error) {
                     response.status(400).send({
+                        'verificado': false,
                         'message': "Can't send email",
                         'error': error
                     });
                 } else {
-                    const mailOptions = {
-                        'from': {
-                            'name': 'Wtransnet',
-                            'address': process.env.MAIL_USER
-                        },
-                        'to': {
-                            'name': `Cliente ${idCompanie}`,
-                            'address': email
-                        },
-                        'subject': 'Validação da conta',
-                        'html': bodycontent
-                    };
-                    transporter.sendMail(mailOptions, function (error, info) {
-                        if (error) {
-                            response.status(400).send({
-                                'message': "Can't send email",
-                                'error': error
-                            });
-                        } else {
-                            response.status(200).send({
-                                'message': 'mail sent'
-                            });
-                        }
+                    response.status(200).send({
+                        'verificado': true,
+                        'message': 'mail sent'
                     });
                 }
-            })
-           
+            });
+
+
         } else {
             response.status(400).send({
                 'verificado': false
@@ -215,7 +215,52 @@ function validarCompanies(request, response){
     })
 }
 
-function recusarCompanie(request, response){
+function recusarCompanie(request, response) {
+    const idCompanie = request.body.idCompanie;
+    const email = request.body.email;
+
+
+    let bodycontent = `Olá caro utilizador, <br> <br>
+            Ao realizarmos a verificação da sua conta foi verificado, que os documentos não sao os corretos! Pedimos que submeta novos documentos <br>
+            <center><a href='https://wtransnet-face.herokuapp.com/loginRecusados'><button type='button'>Submeter novos documentos</button></a></center><br><br>
+            Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/loginRecusados <br><br>`;
+
+    const aceitar = nodemailer.createTransport({
+        service: 'gmail',
+        host: `smtp.gmail.com`,
+        auth: {
+            user: process.env.MAIL_USER, // generated ethereal user
+            pass: process.env.MAIL_PASS, // generated ethereal password
+        }
+    })
+
+
+    const mailOptions = {
+        from: {
+            'name': 'Wtransnet',
+            'address': process.env.MAIL_USER
+        },
+        to: {
+            'name': `Cliente ${idCompanie}`,
+            'address': email
+        },
+        subject: 'Validação da conta',
+        html: bodycontent
+    };
+    aceitar.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            response.status(400).send({
+                'verificado': false,
+                'message': "Can't send email",
+                'error': error
+            });
+        } else {
+            response.status(200).send({
+                'verificado': true,
+                'message': 'mail sent'
+            });
+        }
+    });
 
 }
 
@@ -327,12 +372,12 @@ function getProductsJ(response) {
 }
 
 function getCargas(rq, response) {
-    connect.query(`SELECT * FROM carga WHERE comprador=0`, async(err, rows, fields) => {
-        if(!err){
+    connect.query(`SELECT * FROM carga WHERE comprador=0`, async (err, rows, fields) => {
+        if (!err) {
             response.status(200).send({
                 'body': rows
             })
-        }else{
+        } else {
             response.status(400).send({
                 'body': err
             })
@@ -341,12 +386,12 @@ function getCargas(rq, response) {
 }
 
 function getTransportes(req, response) {
-    connect.query(`SELECT * FROM transporte WHERE comprador=0`, async(err, rows, fields) => {
-        if(!err){
+    connect.query(`SELECT * FROM transporte WHERE comprador=0`, async (err, rows, fields) => {
+        if (!err) {
             response.status(200).send({
                 'body': rows
             })
-        }else{
+        } else {
             response.status(400).send({
                 'body': err
             })
@@ -407,6 +452,7 @@ module.exports = {
     login: login,
     precisaValidacao: precisaValidacao,
     validarCompanies: validarCompanies,
+    recusarCompanie: recusarCompanie,
     getCargas: getCargas,
     getTransportes: getTransportes
 }
