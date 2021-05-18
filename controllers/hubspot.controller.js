@@ -207,7 +207,7 @@ function addFiles(file, callback) {
     };
 
     var formData = {
-        file: file.get('file'),
+        file: fs.createReadStream(file.get('file')),
         options: JSON.stringify(fileOptions),
         folderPath: 'docs'
     };
