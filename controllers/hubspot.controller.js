@@ -196,7 +196,7 @@ function verAtachemnts(idCompanie, callback) {
 function addFiles(file, callback) {
     var postUrl = `https://api.hubapi.com/filemanager/api/v3/files/upload?hapikey=${process.env.HUBSPOT_KEY}`;
 
-    var filename = 'CAE.pdf'
+    var filename = file;
 
     var fileOptions = {
         access: 'PUBLIC_INDEXABLE',
@@ -207,10 +207,11 @@ function addFiles(file, callback) {
     };
 
     var formData = {
-        file: fs.createReadStream(file.get('file')),
+        file: fs.createReadStream(filename),
         options: JSON.stringify(fileOptions),
         folderPath: 'docs'
     };
+    console.log(formData)
 
     request.post({
         url: postUrl,
@@ -218,8 +219,9 @@ function addFiles(file, callback) {
     }, function optionalCallback(err, httpResponse, body, id) {
         const a = JSON.parse(body);
         const b = a.objects[0].id
+        console.log(b)
         if (!err) {
-            callback.status(200).send({
+            callback({
                 'statusCode': 200,
                 'body': b
             })
@@ -236,7 +238,7 @@ function addFiles(file, callback) {
 }
 
 function createEngagement(req, callback) {
-    const companieId = req.companieId;
+    const companieId = req.companieID;
     const fileId = req.fileId;
 
     var options = {

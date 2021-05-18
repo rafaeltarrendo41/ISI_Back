@@ -91,15 +91,35 @@ function verAtachemnts(request, response) {
 
 
 function addFiles(request, response) {
-    //const file =  request.body.file;
-    console.log(request);
-    hubspotController.addFiles(request.body, (res) => {
+    console.log("aqui")
+    var a = request.body;
+    console.log(a);
+    hubspotController.addFiles(request.body.filename, (res) => {
         if (res.statusCode == 200) {
             const fileId = res.body;
             console.log(fileId);
-            response.sendStatus(res.statusCode).send({
-                'resposta': fileId
+
+            const a = {
+                companieID: request.body.companieId,
+                fileId: fileId
+            }
+
+            console.log(a);
+
+            hubspotController.createEngagement(a, (resp) => {
+                if (resp.statusCode == 200) {
+                    response.status(200).send({
+                        'resposta': "ficheiro adicionado"
+                    })
+                } else {
+                    response.sendStatus(resp.statusCode).send({
+                        'resposta': "ficheiro  n adicionado"
+                    })
+                }
             })
+            // response.sendStatus(res.statusCode).send({
+            //     'resposta': fileId
+            // })
         } else {
             response.sendStatus(res.statusCode).send({
                 'resposta': res.body
