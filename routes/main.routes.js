@@ -22,6 +22,11 @@ router.post('/recusarCompanie', mainController.recusarCompanie);
 router.get('/getCargas', mainController.getCargas);
 router.get('/getTransportes', mainController.getTransportes);
 router.post('/addDeal', hubspotController.addDeal);
+router.get('/distancia', mainController.distancia);
+router.post('/pagamentos', mainController.pagamentos);
+
+router.post('/aceitarMatchCarga', mainController.aceitarMatchingCarga);
+router.post('/aceitarMatchTrans', mainController.aceitarMatchingTrans);
 
 router.get('/getToken', jasminController.getToken);
 router.get('/retornar', jasminController.retornar);
