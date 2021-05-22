@@ -91,8 +91,9 @@ function verAtachemnts(request, response) {
 
 }
 
+// setInternal(
 function distancia(request, response) {
-
+    connect.query(`TRUNCATE TABLE matching;`);
     connect.query(`SELECT * FROM carga WHERE comprador=0`, (err, rows, fields) => {
         if (!err) {
             var carga = rows;
@@ -247,6 +248,8 @@ function distancia(request, response) {
         }
     })
 }
+// , 1000*60*15);
+
 
 function aceitarMatchingTrans(request, res) {
     connect.query(`UPDATE matching SET transporteaceitou=1 WHERE idmatching=${request.body.idmatching}`, (err, rows) => {
@@ -342,20 +345,20 @@ function aceitarMatchingCarga(request, res) {
     })
 }
 
-function pagamentos(request, response){
-    connect.query(`SELECT tipoEmpresa FROM companies WHERE idcompanies=${request.body.idCompanie}`, (error, rows) =>{
-        if(rows.length != 0){
-            if(rows[0].tipoEmpresa == "Transportadora"){
-                connect.query(`SELECT * FROM carga WHERE comprador=${request.body.idCompanie}`, (err, rows1) =>{
-                    if(!err){
+function pagamentos(request, response) {
+    connect.query(`SELECT tipoEmpresa FROM companies WHERE idcompanies=${request.body.idCompanie}`, (error, rows) => {
+        if (rows.length != 0) {
+            if (rows[0].tipoEmpresa == "Transportadora") {
+                connect.query(`SELECT * FROM carga WHERE comprador=${request.body.idCompanie}`, (err, rows1) => {
+                    if (!err) {
                         response.status(200).send(rows1);
                     } else {
                         response.status(400).send();
                     }
                 })
             } else {
-                connect.query(`SELECT * FROM transporte WHERE comprador=${request.body.idCompanie}`, (err, rows1) =>{
-                    if(!err){
+                connect.query(`SELECT * FROM transporte WHERE comprador=${request.body.idCompanie}`, (err, rows1) => {
+                    if (!err) {
                         response.status(200).send(rows1);
                     } else {
                         response.status(400).send();
@@ -423,7 +426,8 @@ function precisaValidacao(req, response) {
                                 'url': users[0].url,
                                 'idCompanie': rows[i].idcompanies,
                                 'type': rows[i].tipoEmpresa,
-                                'email': rows[i].email
+                                'email': rows[i].email,
+                                'nif': rows[i].nif
                             })
                         } else {
                             usersF.push({
@@ -451,6 +455,7 @@ function precisaValidacao(req, response) {
 function validarCompanies(request, response) {
     const idCompanie = request.body.idCompanie;
     const email = request.body.email;
+    const nif = request.body.nif;
 
     connect.query(`UPDATE companies SET verificado = 1 WHERE idcompanies = ${idCompanie}`, (err, rows, fields) => {
         if (!err) {
@@ -497,6 +502,7 @@ function validarCompanies(request, response) {
                         'verificado': true,
                         'message': 'mail sent'
                     });
+
                 }
             });
 
@@ -603,7 +609,8 @@ function registerCompanie(req, response) {
                                         idcompanies: res.body.user_id,
                                         email: email,
                                         pass: passCripto,
-                                        tipoEmpresa: tipo
+                                        tipoEmpresa: tipo,
+                                        nif: nif
                                     }
                                     connect.query('INSERT INTO companies SET ?', post, (err, rows, fields) => {
                                         if (!err) {
@@ -647,6 +654,10 @@ function registerCompanie(req, response) {
             response.status(res.statusCode).send(res.body);
         }
     })
+}
+
+function pagar(){
+    
 }
 
 
