@@ -408,7 +408,7 @@ function insertProduct(nome, callback) {
 
 
 
-function insertClient(nif, nome, email, callback) {
+function insertClient(request, callback) {
     getNextNumber((res) => {
         if (res.company_id) {
             const company_id = res.company_id;
@@ -418,15 +418,15 @@ function insertClient(nif, nome, email, callback) {
 
             const json = querystring.stringify({
                 company_id: company_id,
-                vat: nif,
+                vat: request.body.nif,
                 number: next_number,
-                name: nome,
+                name: request.body.nome,
                 language_id: 1,
                 address: '',
                 zip_code: '',
                 city: '',
                 country_id: 1,
-                email: email,
+                email: request.body.email,
                 website: '',
                 phone: '',
                 fax: '',
@@ -459,22 +459,18 @@ function insertClient(nif, nome, email, callback) {
             req.post(options, (err, res) => {
                 if (!err && res.statusCode == 200) {
                     console.log(res.body);
-                    callback({
-                        'statusCode': res.statusCode,
-                        'body': {
-                            customer_id: JSON.parse(res.body).customer_id
-                        }
+                    callback.status(res.statusCode).send({
+                            'customer_id': JSON.parse(res.body).customer_id
                     })
                 } else {
-                    callback({
-                        'statusCode': res.statusCode,
+                    callback.status(res.statusCode).send({
+                        
                         'body': JSON.parse(res.body)
                     })
                 }
             })
         } else {
-            callback({
-                'statusCode': res.statusCode,
+            callback.status(res.statusCode).send({
                 'body': res.body
             });
         }

@@ -377,9 +377,7 @@ function insertProduct(nome, callback) {
                                 })
                              
                             } else {
-                                console.log(res.body);
-
-                                callback.status(400).send({
+                              callback.status(400).send({
                                     'message': "erro ao adicionar produto"
                                 })
                             }
