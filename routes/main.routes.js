@@ -33,10 +33,15 @@ router.get('/getCategory', moloniController.getCategory);
 router.post('/insertClientMOLONI', moloniController.insertClientM);
 router.post('/insertProductMOLONI', moloniController.insertProduct);
 router.get('/getTokenMOLONI', moloniController.getToken);
+router.post('/insertInvoice', moloniController.insertInvoice);
+// router.post('/insertReceipt', moloniController.insertReceipt);
+router.get('/getPDFLink', moloniController.getPDFLink);
 
 router.get('/retornar', jasminController.retornar);
 router.post('/insertClient', jasminController.insertClient);
 router.post('/insertProductJASMIN', jasminController.insertProduct);
 router.get('/getProductsJASMIN', mainController.getProductsJ);
+
+router.get('/getCostumerID', moloniController.getCostumerID);
 
 module.exports = router;
