@@ -546,10 +546,28 @@ function validarCompanies(request, response) {
                         'error': error
                     });
                 } else {
-                    response.status(200).send({
-                        'verificado': true,
-                        'message': 'mail sent'
-                    });
+                    const properties = {
+                        nif: nif,
+                        nome: idCompanie,
+                        email: email
+                    }
+                    moloniController.insertClientM(properties, (res) => {
+                        console.log(res.inserido)
+                        if (res.inserido) {
+                            response.status(200).send({
+                                'verificado': true,
+                                'message': 'mail sent'
+                            });
+                        } else {
+                            response.status(400).send({
+                                'verificado': false,
+                                'message': 'erro moloni'
+                            });
+                        }
+
+
+                    })
+
 
                 }
             });
@@ -809,6 +827,6 @@ module.exports = {
     distancia: distancia,
     aceitarMatchingCarga: aceitarMatchingCarga,
     aceitarMatchingTrans: aceitarMatchingTrans,
-    pagamentos: pagamentos, 
+    pagamentos: pagamentos,
     pagar: pagar
 }

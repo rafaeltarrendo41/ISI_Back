@@ -118,8 +118,8 @@ function getByName(request, response) {
     })
 }
 
-function insertInvoice(request, response) {
-    const nome = request.body.nome;
+function insertInvoice(request, callback) {
+    const nome = request;
     var costumer_id = 0;
     // getByName(nome, (response) =>{
     //     costumer_id = response.costumer_id;
@@ -276,15 +276,15 @@ function insertClient(request, callback) {
 
             const json = querystring.stringify({
                 company_id: company_id,
-                vat: request.body.nif,
+                vat: request.nif,
                 number: next_number,
-                name: request.body.nome,
+                name: request.nome,
                 language_id: 1,
                 address: '',
                 zip_code: '',
                 city: '',
                 country_id: 1,
-                email: request.body.email,
+                email: request.email,
                 website: '',
                 phone: '',
                 fax: '',
@@ -317,12 +317,13 @@ function insertClient(request, callback) {
             req.post(options, (err, res) => {
                 if (!err && res.statusCode == 200) {
                     console.log(res.body);
-                    callback.status(res.statusCode).send({
+                    callback({
+                            'inserido': true,
                             'customer_id': JSON.parse(res.body).customer_id
                     })
                 } else {
-                    callback.status(res.statusCode).send({
-                        
+                    callback({
+                        'inserido': false,
                         'body': JSON.parse(res.body)
                     })
                 }
