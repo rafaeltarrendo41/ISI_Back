@@ -126,17 +126,18 @@ function distancia(request, response) {
                                     'idCarga': resultados[i].idCarga,
                                     'idTransporte': resultados[i].idTransporte
                                 }
-                                connect.query(`INSERT INTO matching SET ?`, dados);
-                                connect.query(`SELECT idmatching FROM matching WHERE idCarga=${resultados[i].idCarga} AND idTransporte=${resultados[i].idTransporte}`, dados, (err, rows1) => {
-                                    if (!err) {
-                                        console.log(rows1);
-                                        const cona = rows1[0].idmatching;
-                                        //const cona = 10
-                                        console.log(cona);
+                                connect.query(`INSERT INTO matching SET ?`, dados, (err, rows7) => {
+
+                                    connect.query(`SELECT idmatching FROM matching WHERE idCarga=${resultados[i].idCarga} AND idTransporte=${resultados[i].idTransporte}`, dados, (err, rows1) => {
+                                        if (!err) {
+                                            console.log(rows1);
+                                            const cona = rows1[0].idmatching;
+                                            //const cona = 10
+                                            console.log(cona);
 
 
 
-                                        let bodycontentCarga = `Olá caro utilizador, <br> <br>
+                                            let bodycontentCarga = `Olá caro utilizador, <br> <br>
             Uma das suas cargas publicadas no nosso serviço acabou de fazer matching com um transporte!  <br>
             Seguem em seguida as caracteristicas do transporte: <br>
             Origem: ${resultados[i].origem} <br>
@@ -148,7 +149,7 @@ function distancia(request, response) {
             <center><a href='https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${cona}'><button type='button'>Aceder a Conta</button></a></center><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${cona} <br><br>`;
 
-                                        let bodycontentTransporte = `Olá caro utilizador, <br> <br>
+                                            let bodycontentTransporte = `Olá caro utilizador, <br> <br>
             Uma dos seus tarnsportes publicadas no nosso serviço acabou de fazer matching com uma carga!  <br>
             Seguem em seguida as caracteristicas da carga: <br>
             Origem: ${resultados[i].origem} <br>
@@ -160,70 +161,71 @@ function distancia(request, response) {
             <center><a href='https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${cona}'><button type='button'>Aceder a Conta</button></a></center><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${cona} <br><br>`;
 
-                                        const enviar = nodemailer.createTransport({
-                                            service: 'gmail',
-                                            host: `smtp.gmail.com`,
-                                            auth: {
-                                                user: process.env.MAIL_USER, // generated ethereal user
-                                                pass: process.env.MAIL_PASS, // generated ethereal password
-                                            }
-                                        })
+                                            const enviar = nodemailer.createTransport({
+                                                service: 'gmail',
+                                                host: `smtp.gmail.com`,
+                                                auth: {
+                                                    user: process.env.MAIL_USER, // generated ethereal user
+                                                    pass: process.env.MAIL_PASS, // generated ethereal password
+                                                }
+                                            })
 
 
-                                        const mailOptions1 = {
-                                            from: {
-                                                'name': 'Wtransnet',
-                                                'address': process.env.MAIL_USER
-                                            },
-                                            to: {
-                                                'address': rows[0].email
-                                            },
-                                            subject: 'Proposta de matching',
-                                            html: bodycontentTransporte
-                                        };
+                                            const mailOptions1 = {
+                                                from: {
+                                                    'name': 'Wtransnet',
+                                                    'address': process.env.MAIL_USER
+                                                },
+                                                to: {
+                                                    'address': rows[0].email
+                                                },
+                                                subject: 'Proposta de matching',
+                                                html: bodycontentTransporte
+                                            };
 
-                                        const mailOptions = {
-                                            from: {
-                                                'name': 'Wtransnet',
-                                                'address': process.env.MAIL_USER
-                                            },
-                                            to: {
-                                                'address': rows[1].email
-                                            },
-                                            subject: 'Proposta de matching',
-                                            html: bodycontentCarga
-                                        };
-                                        enviar.sendMail(mailOptions, function (error, info) {
-                                            if (error) {
-                                                response.status(400).send({
-                                                    'verificado': false,
-                                                    'message': "Can't send email",
-                                                    'error': error
-                                                });
-                                            } else {
-                                                response.status(200).send({
-                                                    'verificado': true,
-                                                    'message': 'mail sent'
-                                                });
-                                            }
-                                        });
-                                        enviar.sendMail(mailOptions1, function (error, info) {
-                                            if (error) {
-                                                response.status(400).send({
-                                                    'verificado': false,
-                                                    'message': "Can't send email",
-                                                    'error': error
-                                                });
-                                            } else {
-                                                response.status(200).send({
-                                                    'verificado': true,
-                                                    'message': 'mail sent'
-                                                });
-                                            }
-                                        });
-                                    } else {
-                                        console.log(err);
-                                    }
+                                            const mailOptions = {
+                                                from: {
+                                                    'name': 'Wtransnet',
+                                                    'address': process.env.MAIL_USER
+                                                },
+                                                to: {
+                                                    'address': rows[1].email
+                                                },
+                                                subject: 'Proposta de matching',
+                                                html: bodycontentCarga
+                                            };
+                                            enviar.sendMail(mailOptions, function (error, info) {
+                                                if (error) {
+                                                    response.status(400).send({
+                                                        'verificado': false,
+                                                        'message': "Can't send email",
+                                                        'error': error
+                                                    });
+                                                } else {
+                                                    response.status(200).send({
+                                                        'verificado': true,
+                                                        'message': 'mail sent'
+                                                    });
+                                                }
+                                            });
+                                            enviar.sendMail(mailOptions1, function (error, info) {
+                                                if (error) {
+                                                    response.status(400).send({
+                                                        'verificado': false,
+                                                        'message': "Can't send email",
+                                                        'error': error
+                                                    });
+                                                } else {
+                                                    response.status(200).send({
+                                                        'verificado': true,
+                                                        'message': 'mail sent'
+                                                    });
+                                                }
+                                            });
+                                        } else {
+                                            console.log(err);
+                                        }
+                                    })
                                 })
 
                             }
@@ -349,7 +351,7 @@ function pagamentos(request, response) {
     connect.query(`SELECT tipoEmpresa FROM companies WHERE idcompanies=${request.body.idCompanie}`, (error, rows) => {
         if (rows.length != 0) {
             if (rows[0].tipoEmpresa == "Transportadora") {
-                connect.query(`SELECT * FROM carga WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
+                connect.query(`SELECT idCargas as idCompra, origem, destino, especialidade,peso FROM carga WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
                     if (!err) {
                         response.status(200).send(rows1);
                     } else {
@@ -357,7 +359,7 @@ function pagamentos(request, response) {
                     }
                 })
             } else {
-                connect.query(`SELECT * FROM transporte WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
+                connect.query(`SELECT idCargas as idCompra, origem, destino, especialidade,peso FROM transporte WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
                     if (!err) {
                         response.status(200).send(rows1);
                     } else {

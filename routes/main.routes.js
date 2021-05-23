@@ -24,7 +24,7 @@ router.get('/getTransportes', mainController.getTransportes);
 router.post('/addDeal', hubspotController.addDeal);
 router.get('/distancia', mainController.distancia);
 router.post('/pagamentos', mainController.pagamentos);
-router.post('/pagar', mainController.pagar);
+router.post('/pagar', mainController.pagar)
 
 router.post('/aceitarMatchCarga', mainController.aceitarMatchingCarga);
 router.post('/aceitarMatchTrans', mainController.aceitarMatchingTrans);
@@ -48,6 +48,6 @@ router.post('/insertClient', jasminController.insertClient);
 router.post('/insertProductJASMIN', jasminController.insertProduct);
 router.get('/getProductsJASMIN', mainController.getProductsJ);
 
-router.get('/getByName', moloniController.getByName);
+router.get('/getCostumerID', moloniController.getCostumerID);
 
 module.exports = router;
