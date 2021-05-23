@@ -47,6 +47,6 @@ router.post('/insertClient', jasminController.insertClient);
 router.post('/insertProductJASMIN', jasminController.insertProduct);
 router.get('/getProductsJASMIN', mainController.getProductsJ);
 
-router.get('/getCostumerID', moloniController.getCostumerID);
+router.get('/getByName', moloniController.getByName);
 
 module.exports = router;
