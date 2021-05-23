@@ -215,75 +215,21 @@ function getCostumerID(callback) {
     })
 }
 
-function insertInvoice(request, response) {
-    const costumer_id = request.body.costumer_id;
+function insertInvoice(request, callback) {
+    //const costumer_id = request.body.costumer_id;
 
     getNextNumber((res) => {
-        // console.log(res.customer_id);
         if (res.company_id) {
-            // let resBody = JSON.parse(res.body);
-            // let customer_id = -1;
-            // for (let i = 0; i < resBody.length; i++) {
-            //     if (resBody[i].name == nome) {
-            //         customer_id = resBody[i].customer_id
-            //         //console.log("CATEGORY ID: " + category_id)
-            //     }
-            // }
-            // console.log(customer_id);
-
             const company_id = res.company_id;
             const access_token = res.access_token;
             const next_number = res.next_number;
-            // let productsF = [];
-
-            // productsF.push({
-            //     'product_id': 86211844,
-            //     'name': 'ServiçoWtransnet',
-            //     'summary': '',
-            //     'qty': 1,
-            //     'price': 25,
-            //     'discount': 0,
-            //     'deduction_id': 0,
-            //     'order': 0,
-            //     'exemption_reason': '',
-            //     'taxes': [{
-            //         'tax_id': 2194883,
-            //         'value': 5.75,
-            //         'order': 1,
-            //         'cumulative': 0
-            //     }]
-            // });
-
-
-            // const json = {
-            //     'company_id': company_id,
-            //     'date': new Date().toISOString(),
-            //     'expiration_date': new Date().toISOString(),
-            //     'maturity_date_id': 0,
-            //     'document_set_id': 402498,
-            //     'customer_id': customer_id,
-            //     'alternate_address_id': 0,
-            //     'our_reference': 'Nossa referência',
-            //     'your_reference': 'Referência Cliente',
-            //     'financial_discount': 0,
-            //     'eac_id': 0,
-            //     'salesman_id': 0,
-            //     'salesman_commision': 0,
-            //     'special_discount': 0,
-            //     'products': productsF,
-            //     'exchange_currency_id': 0,
-            //     'exchange_rate': 0,
-            //     'notes': ''
-            // };
-
-
 
             const json1 = querystring.stringify({
                 'company_id': 181093,
                 'date': new Date().toISOString(),
                 'expiration_date': new Date().toISOString(),
                 'document_set_id': 402498,
-                'customer_id': costumer_id,
+                'customer_id': 45357605,
                 'products[0][product_id]': 86211844,
                 'products[0][name]': 'ServiçoWtransnet',
                 'products[0][qty]': 1.0,
@@ -296,9 +242,6 @@ function insertInvoice(request, response) {
 
             })
 
-            // console.log(json1);
-            // console.log(json1.products)
-
             let options = {
                 headers: {
                     'Content-Length': json1.length,
@@ -308,11 +251,11 @@ function insertInvoice(request, response) {
                 body: json1
             }
 
-            // console.log(options);
-
             req.post(options, (err, result) => {
                 if (!err && result.statusCode == 200) {
-                    response.status(200).send(JSON.parse(result.body))
+                    callback({
+                        fatura: JSON.parse(result.body)
+                    })
                 } else {
                     response.status(400).send("erro");
                 }

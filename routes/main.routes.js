@@ -24,6 +24,7 @@ router.get('/getTransportes', mainController.getTransportes);
 router.post('/addDeal', hubspotController.addDeal);
 router.get('/distancia', mainController.distancia);
 router.post('/pagamentos', mainController.pagamentos);
+router.post('/pagar', mainController.pagar);
 
 router.post('/aceitarMatchCarga', mainController.aceitarMatchingCarga);
 router.post('/aceitarMatchTrans', mainController.aceitarMatchingTrans);

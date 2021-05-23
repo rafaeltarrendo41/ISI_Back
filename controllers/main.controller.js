@@ -349,7 +349,7 @@ function pagamentos(request, response) {
     connect.query(`SELECT tipoEmpresa FROM companies WHERE idcompanies=${request.body.idCompanie}`, (error, rows) => {
         if (rows.length != 0) {
             if (rows[0].tipoEmpresa == "Transportadora") {
-                connect.query(`SELECT * FROM carga WHERE comprador=${request.body.idCompanie}`, (err, rows1) => {
+                connect.query(`SELECT * FROM carga WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
                     if (!err) {
                         response.status(200).send(rows1);
                     } else {
@@ -357,7 +357,7 @@ function pagamentos(request, response) {
                     }
                 })
             } else {
-                connect.query(`SELECT * FROM transporte WHERE comprador=${request.body.idCompanie}`, (err, rows1) => {
+                connect.query(`SELECT * FROM transporte WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
                     if (!err) {
                         response.status(200).send(rows1);
                     } else {
@@ -367,6 +367,54 @@ function pagamentos(request, response) {
             }
         } else {
             response.status(400).send(error)
+        }
+    })
+}
+
+function pagar(request, response) {
+    const compraID = request.body.compraID;
+    const companieID = request.body.companie_id;
+    // console.log(request)
+    moloniController.insertInvoice(companieID, (res) => {
+        console.log(res.fatura.valid)
+        if (res.fatura.valid == "1") {
+            const idVenda = res.fatura.document_id;
+            connect.query(`SELECT tipoEmpresa FROM companies WHERE idcompanies=${companieID}`, (err, rows) => {
+                if (rows[0].tipoEmpresa == "Transportadora") {
+                    connect.query(`UPDATE carga SET idVenda=${idVenda} WHERE idCargas=${compraID}`, (err, rows1) => {
+                        if (!err) {
+                            response.status(200).send({
+                                'message': 'pago'
+                            });
+                        } else {
+                            console.log(err)
+                            response.status(400).send({
+                                'message': 'erro bd'
+                            });
+                        }
+                    })
+                } else {
+                    connect.query(`UPDATE transporte SET idVenda=${idVenda} WHERE idTransporte=${compraID}`, (err, rows1) => {
+                        if (!err) {
+                            response.status(200).send({
+                                'message': 'pago'
+                            });
+                        } else {
+                            console.log(err)
+                            response.status(400).send({
+                                'message': 'erro bd'
+                            });
+                        }
+
+                    })
+                }
+            })
+
+
+        } else {
+            response.status(400).send({
+                'message': 'erro'
+            })
         }
     })
 }
@@ -656,9 +704,7 @@ function registerCompanie(req, response) {
     })
 }
 
-function pagar(){
-    
-}
+
 
 
 
@@ -763,5 +809,6 @@ module.exports = {
     distancia: distancia,
     aceitarMatchingCarga: aceitarMatchingCarga,
     aceitarMatchingTrans: aceitarMatchingTrans,
-    pagamentos: pagamentos
+    pagamentos: pagamentos, 
+    pagar: pagar
 }
