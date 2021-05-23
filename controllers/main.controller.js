@@ -359,7 +359,7 @@ function pagamentos(request, response) {
                     }
                 })
             } else {
-                connect.query(`SELECT idCargas as idCompra, origem, destino, especialidade,peso FROM transporte WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
+                connect.query(`SELECT idTransporte as idCompra, origem, destino, especialidade,peso FROM transporte WHERE comprador=${request.body.idCompanie} AND idVenda=0`, (err, rows1) => {
                     if (!err) {
                         response.status(200).send(rows1);
                     } else {
