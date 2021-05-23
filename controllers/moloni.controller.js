@@ -29,7 +29,10 @@ function retornar() {
     //     console.log(res);
     // // // // //  })
     // insertClient("293820317", "CLIENTPOSTMAN", "nada");
-    getCustomers((res) => {
+    // getCustomers((res) => {
+    //     console.log(res);
+    // })
+    getByName((res) => {
         console.log(res);
     })
 
@@ -78,158 +81,70 @@ function getPDFLink(document_id, callback) {
 }
 
 
-// function insertReceipt(customer_id, status, callback) {
-//     getNextNumber((res) => {
-//         // console.log(res);
-//         if (res.company_id) {
-//             const company_id = res.company_id;
-//             const access_token = res.access_token;
-//             const next_number = res.next_number;
-//             let productsF = [];
-
-//             productsF.push({
-//                 'product_id': 86211844,
-//                 'name': 'ServiçoWtransnet',
-//                 'summary': '',
-//                 'qty': 1,
-//                 'price': 25,
-//                 'discount': 0,
-//                 'deduction_id': 0,
-//                 'order': 0,
-//                 'exemption_reason': '',
-//                 'taxes': [{
-//                     'tax_id': 2194883,
-//                     'value': 5.75,
-//                     'order': 1,
-//                     'cumulative': 0
-//                 }]
-//             });
-
-
-//             let json = {
-//                 'company_id': company_id,
-//                 'date': new Date().toISOString(),
-//                 'expiration_date': new Date().toISOString(),
-//                 'maturity_date_id': 0,
-//                 'document_set_id': 402498,
-//                 'customer_id': customer_id,
-//                 'alternate_address_id': 0,
-//                 'our_reference': 'Nossa referência',
-//                 'your_reference': 'Referência Cliente',
-//                 'financial_discount': 0,
-//                 'eac_id': 0,
-//                 'salesman_id': 0,
-//                 'salesman_commision': 0,
-//                 'special_discount': 0,
-//                 'exchange_currency_id': 0,
-//                 'exchange_rate': 0,
-//                 'notes': '',
-//                 'status': status,
-//                 'net_value': 0,
-//                 'products': productsF
-//             };
-
-//             if (json.status == 1) {
-//                 let total = 0;
-//                 for (let i = 0; i < productsF.length; i++) {
-//                     total += (productsF[i].qty * (productsF[i].price + products[i].taxes[0].value)).toFixed(2);
-//                 }
-//                 json.payments = [{
-//                     'payment_method_id': 820244,
-//                     'date': new Date().toISOString(),
-//                     'value': total
-//                 }]
-//             }
-
-
-//             let options = {
-//                 headers: {
-//                     'Content-Type': 'application/json; charset=utf-8'
-//                 },
-//                 url: `https://api.moloni.pt/v1/invoiceReceipts/insert/?access_token=${access_token}&json=true`,
-//                 body: JSON.stringify(json)
-//             }
-//             req.post(options, (err, res) => {
-//                 if (!err && res.statusCode == 200) {
-//                     callback({
-//                         'statusCode': res.statusCode,
-//                         'body': {
-//                             'message': 'Purchase inserted with success'
-//                         }
-//                     });
-//                 } else {
-//                     callback({
-//                         'statusCode': res.statusCode,
-//                         'body': res.body
-//                     });
-//                 }
-//             })
-//         } else {
-//             callback({
-//                 'statusCode': res.statusCode,
-//                 'body': res.body
-//             });
-//         }
-//     })
-// }
-
-function getCostumerID(callback) {
+function getByName(request, response) {
+    const name = request;
     getNextNumber((res) => {
         if (res.company_id) {
 
+            let company_id = res.company_id;
+            let  access_token = res.access_token;
             let json = querystring.stringify({
-                company_id: res.company_id,
+                company_id: company_id,
+                name: name
             });
-            const access_token = res.access_token;
             let options = {
                 headers: {
                     'Content-Length': json.length,
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                url: `https://api.moloni.pt/v1/customers/getAll/?access_token=${access_token}`,
+                url: `https://api.moloni.pt/v1/customers/getByName/?access_token=${access_token}`,
                 body: json
             }
-            req.post(options, (err, res) => {
-                if (!err && res.statusCode == 200) {
-                    let resp = JSON.parse(res.body);
-                    console.log(resp);
-                    callback({
-                        'customers': resp,
-                        'company_id': company_id,
-                        // 'customer_id': customer_id,
-                        'access_token': access_token
-                    });
+            req.post(options, (err, result) => {
+                if (!err && result.statusCode == 200) {
+                    const costumer_id = JSON.parse(result.body);
+                    // console.log(costumer_id[0].customer_id);
+                    response({
+                        'customer_id': costumer_id[0].customer_id,
+                        'access_token': access_token,
+                    })
                 } else {
-                    callback({
-                        'statusCode': res.statusCode,
-                        'body': JSON.parse(res.body)
-                    });
+                    response.status(400).send("erro");
                 }
             })
         } else {
-            callback({
-                'statusCode': res.statusCode,
-                'body': res.body
-            });
+            response.status(400).send("erro");
         }
     })
 }
 
-function insertInvoice(request, callback) {
-    //const costumer_id = request.body.costumer_id;
+function insertInvoice(request, response) {
+    const nome = request.body.nome;
+    var costumer_id = 0;
+    // getByName(nome, (response) =>{
+    //     costumer_id = response.costumer_id;
+    // })
 
-    getNextNumber((res) => {
-        if (res.company_id) {
-            const company_id = res.company_id;
+    
+
+    getByName(nome, (res) => {
+        // console.log(nome);
+        if (res) {
+            
+            customer_id = res.customer_id;
+            // console.log(customer_id);
+
             const access_token = res.access_token;
-            const next_number = res.next_number;
+            // console.log(access_token);
+            
+
 
             const json1 = querystring.stringify({
                 'company_id': 181093,
                 'date': new Date().toISOString(),
                 'expiration_date': new Date().toISOString(),
                 'document_set_id': 402498,
-                'customer_id': 45357605,
+                'customer_id': customer_id,
                 'products[0][product_id]': 86211844,
                 'products[0][name]': 'ServiçoWtransnet',
                 'products[0][qty]': 1.0,
@@ -257,11 +172,11 @@ function insertInvoice(request, callback) {
                         fatura: JSON.parse(result.body)
                     })
                 } else {
-                    response.status(400).send("erro");
+                    response.status(400).send(JSON.parse(result.body));
                 }
             })
         } else {
-            response.status(400).send("erro");
+            response.status(400).send("ERRO");
         }
     })
 }
@@ -737,5 +652,5 @@ module.exports = {
     insertInvoice: insertInvoice,
     // insertReceipt: insertReceipt,
     getPDFLink: getPDFLink,
-    getCostumerID: getCostumerID
+    getByName: getByName
 };
