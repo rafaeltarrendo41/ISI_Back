@@ -512,14 +512,15 @@ function validarCompanies(request, response) {
             // response.status(200).send({
             //     'verificado': true
             // })
-            let bodycontent = `<img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+            let bodycontent = `
             <br> <br> 
             <form>
             Bem vindo à Wtransnet, <br> <br>
             A sua conta acabou de ser verificada e a partir deste momento poderá usufruir dos nossos serviços! <br>
             <a href='https://wtransnet-face.herokuapp.com/login'> <br> <button type='button'>Aceder a Conta</button></a><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/login <br><br>
-            </form>`;
+            </form>
+            <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">`;
             
 
             const aceitar = nodemailer.createTransport({
