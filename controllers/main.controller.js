@@ -513,9 +513,9 @@ function validarCompanies(request, response) {
             //     'verificado': true
             // })
             let bodycontent = `<img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
-            Bem vindo à Wtransnet, <br> <br>
+            <br> <br> Bem vindo à Wtransnet, <br> <br>
             A sua conta acabou de ser verificada e a partir deste momento poderá usufruir dos nossos serviços! <br>
-            <center><a href='https://wtransnet-face.herokuapp.com/login'><button type='button'>Aceder a Conta</button></a></center><br><br>
+            <a href='https://wtransnet-face.herokuapp.com/login'> <br> <button type='button'>Aceder a Conta</button></a><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/login <br><br>`;
 
 
