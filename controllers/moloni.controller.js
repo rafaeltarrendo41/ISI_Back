@@ -47,7 +47,7 @@ function getPDFLink(document_id, callback) {
 
             let json = querystring.stringify({
                 company_id: 181093,
-                document_id: 405767757
+                document_id: document_id
             });
             let options = {
                 headers: {
@@ -58,10 +58,10 @@ function getPDFLink(document_id, callback) {
             }
             req.post(options, (err, res) => {
                 if (!err && res.statusCode == 200) {
-                    console.log(res.body);
+                    const a = JSON.parse(res.body)
                     callback({
                         'statusCode': res.statusCode,
-                        'body': res.body
+                        'body': a.url
                     });
                 } else {
                     callback({

@@ -811,6 +811,69 @@ function login(request, response) {
     })
 }
 
+function verDocumentos(request, response) {
+    const companie_id = request.body.companieID;
+
+    connect.query(`SELECT tipoEmpresa FROM companies WHERE idcompanies=${companie_id}`, (error, rows) => {
+        if (rows.length != 0) {
+            let documentos = []
+            if (rows[0].tipoEmpresa == "Transportadora") {
+                connect.query(`SELECT * FROM carga WHERE comprador=${companie_id} AND idVenda!=0`, (err, rows1) => {
+                    if (!err) {
+                        if (rows1.length != 0) {
+                            for (let i = 0; i < rows1.length; i++) {
+                                moloniController.getPDFLink(rows1[i].idVenda, (res) => {
+                                    documentos.push({
+                                        'origem': rows1[i].origem,
+                                        'destino': rows1[i].destino,
+                                        'especialidade': rows1[i].especialidade,
+                                        'ton': rows1[i].peso,
+                                        'fatura': res.body
+                                    })
+
+                                    if(documentos.length == rows1.length){
+                                        console.log(documentos);
+                                        response.status(200).send(documentos);
+                                    }
+                                })
+                            }
+                        }
+                    } else {
+                        response.status(400).send();
+                    }
+                })
+            } else {
+                connect.query(`SELECT * FROM transporte WHERE comprador=${companie_id} AND idVenda!=0`, (err, rows1) => {
+                    if (!err) {
+                        if (rows1.length != 0) {
+                            console.log(rows1.length)
+                            for (let i = 0; i < rows1.length; i++) {
+                                moloniController.getPDFLink(rows1[i].idVenda, (res) => {
+                                    documentos.push({
+                                        'origem': rows1[i].origem,
+                                        'destino': rows1[i].destino,
+                                        'especialidade': rows1[i].especialidade,
+                                        'ton': rows1[i].peso,
+                                        'fatura': res.body
+                                    })
+
+                                    if(documentos.length == rows1.length){
+                                        response.status(200).send(documentos);
+                                    }
+                                })
+                            }
+                        }
+                    } else {
+                        response.status(400).send();
+                    }
+                })
+            }
+        } else {
+            response.status(400).send(error)
+        }
+    })
+}
+
 module.exports = {
     getCompanies: getCompanies,
     createCompanie: createCompanie,
@@ -830,5 +893,6 @@ module.exports = {
     aceitarMatchingCarga: aceitarMatchingCarga,
     aceitarMatchingTrans: aceitarMatchingTrans,
     pagamentos: pagamentos,
-    pagar: pagar
+    pagar: pagar,
+    verDocumentos: verDocumentos
 }
