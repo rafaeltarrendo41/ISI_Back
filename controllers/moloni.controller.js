@@ -7,15 +7,15 @@ const connect = require('./../config/dbConnection');
 
 
 function retornar() {
-    // getToken((res) => {
-    //     console.log(res.access_token);
-    //     })
+    getToken((res) => {
+        console.log(res.access_token);
+        })
     // getCompany((res) => {
     //         console.log(res);
     //     })
-    // getProducts((res) => {
-    //              console.log(res);
-    //     })
+    getProducts((res) => {
+                 console.log(res);
+        })
     // getCategory((res) => {
     //         console.log(res);
     //      })
@@ -32,9 +32,13 @@ function retornar() {
     // getCustomers((res) => {
     //     console.log(res);
     // })
-    getByName((res) => {
-        console.log(res);
-    })
+    // getByName((res) => {
+    //     console.log(res);
+    // })
+    // getPaymentID((res) => {
+    //     console.log(res);
+    // })
+    
 
 
 }
@@ -119,7 +123,7 @@ function getByName(request, response) {
 }
 
 function insertInvoice(request, callback) {
-    const nome = request;
+    const nome = 'Carpintaria Lopes';
     var costumer_id = 0;
     // getByName(nome, (response) =>{
     //     costumer_id = response.costumer_id;
@@ -153,6 +157,9 @@ function insertInvoice(request, callback) {
                 'products[0][taxes][0][value]': 5.75,
                 'products[0][taxes][0][order]': 1,
                 'products[0][taxes][0][cumulative]': 0,
+                'payments[0][payment_method_id]':1264289,
+                'payments[0][date]': new Date().toISOString(),
+                'payments[0][value]': 30.75,
                 'status': 1
 
             })
@@ -162,7 +169,7 @@ function insertInvoice(request, callback) {
                     'Content-Length': json1.length,
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                url: `https://api.moloni.pt/v1/invoices/insert/?access_token=${access_token}`,
+                url: `https://api.moloni.pt/v1/simplifiedInvoices/insert/?access_token=${access_token}`,
                 body: json1
             }
 
@@ -478,13 +485,57 @@ function getCustomers(callback) {
     })
 }
 
+function getPaymentID(callback) {
+    getCategory((res) => {
+        if (res.category_id) {
+            const access_token = res.access_token;
+            const company_id = res.company_id;
+            const category_id = res.category_id;
+
+            let json = querystring.stringify({
+                company_id: company_id,
+            });
+            let options = {
+                headers: {
+                    'Content-Length': json.length,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                url: `https://api.moloni.pt/v1/paymentMethods/getAll/?access_token=${access_token}`,
+                body: json
+            }
+            req.post(options, (err, res) => {
+                if (!err && res.statusCode == 200) {
+                    let resp = JSON.parse(res.body);
+                    console.log(resp);
+                    callback({
+                        'paymentID': resp,
+                        'company_id': company_id,
+                        // 'customer_id': customer_id,
+                        'access_token': access_token
+                    });
+                } else {
+                    callback({
+                        'statusCode': res.statusCode,
+                        'body': JSON.parse(res.body)
+                    });
+                }
+            })
+        } else {
+            callback({
+                'statusCode': res.statusCode,
+                'body': res.body
+            });
+        }
+    })
+}
+
 
 function getProducts(callback) {
     getCategory((res) => {
         if (res.category_id) {
             const access_token = res.access_token;
             const company_id = res.company_id;
-            const category_id = res.category_id;
+            const category_id = 3700122;
             let json = querystring.stringify({
                 company_id: company_id,
                 category_id: category_id,
@@ -503,18 +554,27 @@ function getProducts(callback) {
             req.post(options, (err, res) => {
                 if (!err && res.statusCode == 200) {
                     let resp = JSON.parse(res.body);
-                    console.log(resp);
-                    // console.log(resp[0].child_products);
-                    // callback({
-                    //     'products': resp,
-                    //     'company_id': company_id,
-                    //     'access_token': access_token
-                    // });
+                    console.log(resp.length);
+                    let produtos = []
+                    for(let i = 0; i<resp.length;i++){
+                        produtos.push({
+                            name:resp[i].name,
+                            dataCriacao:resp[i].created
+                        })
+
+                        if(produtos.length == resp.length){
+                            callback({
+                                'statusCode':res.statusCode,
+                                'body':produtos
+                            })
+                        }
+                    }
+
                 } else {
-                    // callback({
-                    //     'statusCode': res.statusCode,
-                    //     'body': JSON.parse(res.body)
-                    // });
+                    callback({
+                        'statusCode': res.statusCode,
+                        'body': JSON.parse(res.body)
+                    });
                 }
             })
         } else {
@@ -549,7 +609,7 @@ function getCategory(callback) {
                     let resBody = JSON.parse(res.body);
                     let category_id = -1;
                     for (let i = 0; i < resBody.length; i++) {
-                        if (resBody[i].name == 'Serviço') {
+                        if (resBody[i].name == 'Transportes') {
                             category_id = resBody[i].category_id,
                                 nameC = resBody[i].name
                             // console.log(category_id);

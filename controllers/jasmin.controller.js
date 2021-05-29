@@ -40,7 +40,7 @@ function retornar() {
     // console.log(res.access_token);
     // })
     getProducts((res) => {
-        console.log("Cona");
+        console.log("Aqui");
     })
     // getMaterials((res) => {
     //     console.log(res);
@@ -81,12 +81,13 @@ function getProducts(callback) {
                     const a = JSON.parse(body)
                     ///.log(resp);
                     var tamnho = Object.keys(a);
-                    console.log(tamnho.length);
+                    // console.log(res.body);
                     let produtos = [];
                     for (let i = 0; i < tamnho.length; i++) {
                         //console.log(resp[i]);
                         produtos.push({
-                            'nome': a[i].itemKey
+                            'nome': a[i].itemKey,
+                            'dataCriacao': a[i].createdOn
                         })
                     }
                     console.log(produtos);
