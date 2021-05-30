@@ -733,7 +733,7 @@ function registerCompanie(req, response) {
             } else {
                 response.status(400).send({
                     'body': {
-                        'error': 'CONTACT_EXISTS'
+                        'message': 'CONTACT_EXISTS'
                     }
                 });
             }
