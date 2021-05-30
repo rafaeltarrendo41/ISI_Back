@@ -535,7 +535,7 @@ function getProducts(callback) {
         if (res.category_id) {
             const access_token = res.access_token;
             const company_id = res.company_id;
-            const category_id = 3700122;
+            const category_id = 3802953;
             let json = querystring.stringify({
                 company_id: company_id,
                 category_id: category_id,
