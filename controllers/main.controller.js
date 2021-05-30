@@ -753,6 +753,19 @@ function getProductsJ(request,response) {
     })
 }
 
+function getProductsM(request, response){
+    moloniController.getProducts((res) => {
+        if (res.statusCode == 200) {
+            const users = res.body;
+            response.status(200).send({
+                'cargas':users});
+
+        } else {
+            response.status(400).send(users);
+        }
+    })
+}
+
 function getCargas(rq, response) {
     connect.query(`SELECT * FROM carga WHERE comprador=0`, async (err, rows, fields) => {
         if (!err) {
@@ -905,5 +918,6 @@ module.exports = {
     aceitarMatchingTrans: aceitarMatchingTrans,
     pagamentos: pagamentos,
     pagar: pagar,
-    verDocumentos: verDocumentos
+    verDocumentos: verDocumentos,
+    getProductsM: getProductsM
 }
