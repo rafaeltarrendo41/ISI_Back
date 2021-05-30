@@ -633,10 +633,19 @@ function recusarCompanie(request, response) {
                 'error': error
             });
         } else {
-            response.status(200).send({
-                'verificado': true,
-                'message': 'mail sent'
-            });
+            hubspotController.removeClient(idCompanie, (res)=>{
+                if(res.statusCode == 200){
+                    connect.query(`DELETE FROM companies WHERE idcompanies=${idCompanie}`,(err, rows, fields) =>{
+                        if(!err){
+                            response.status(200).send({
+                                'verificado': true,
+                                'message': 'mail sent'
+                            });
+                        }
+                    })
+                }
+            })
+            
         }
     });
 

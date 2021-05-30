@@ -285,8 +285,26 @@ function createEngagement(req, callback) {
     })
 }
 
-function removeClient(callback) {
-    
+function removeClient(req,callback) {
+    var options = {
+        method: 'DELETE',
+        url: `https://api.hubapi.com/crm/v3/objects/companies/${req}`,
+        qs: {hapikey: process.env.HUBSPOT_KEY},
+        headers: {accept: 'application/json'}
+      };
+      
+      request(options, function (error, response, body) {
+          if(!error){
+            callback({
+                'statusCode':200
+            })
+          } else {
+            callback({
+                'statucCode':400
+            })
+          }
+       
+      });
 }
 module.exports = {
     getCompanies: getCompanies,
@@ -296,5 +314,5 @@ module.exports = {
     verAtachemnts: verAtachemnts,
     addFiles: addFiles,
     createEngagement: createEngagement,
-    //addDeal: addDeal
+    removeClient: removeClient
 }
