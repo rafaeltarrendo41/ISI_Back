@@ -523,7 +523,7 @@ function validarCompanies(request, response) {
             A sua conta acabou de ser verificada e a partir deste momento poderá usufruir dos nossos serviços! <br>
             <a href='https://wtransnet-face.herokuapp.com/login'> <br> <button type='button'>Aceder</button></a><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/login <br><br>`;
-            
+
 
             const aceitar = nodemailer.createTransport({
                 service: 'gmail',
@@ -841,7 +841,7 @@ function verDocumentos(request, response) {
                                         'fatura': res.body
                                     })
 
-                                    if(documentos.length == rows1.length){
+                                    if (documentos.length == rows1.length) {
                                         console.log(documentos);
                                         response.status(200).send(documentos);
                                     }
@@ -867,7 +867,7 @@ function verDocumentos(request, response) {
                                         'fatura': res.body
                                     })
 
-                                    if(documentos.length == rows1.length){
+                                    if (documentos.length == rows1.length) {
                                         response.status(200).send(documentos);
                                     }
                                 })

@@ -27,6 +27,7 @@ function getCompanies(callback) {
                         'id': users[i].id,
                         'nif': users[i].properties.numero_de_identificacao_fiscal,
                         'name': users[i].properties.name,
+                        'email': users[i].properties.email
                     })
                 }
                 callback({

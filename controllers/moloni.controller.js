@@ -7,9 +7,9 @@ const connect = require('./../config/dbConnection');
 
 
 function retornar() {
-    getToken((res) => {
-        console.log(res.access_token);
-        })
+    // getToken((res) => {
+    //     console.log(res.access_token);
+    //     })
     // getCompany((res) => {
     //         console.log(res);
     //     })
@@ -578,10 +578,10 @@ function getProducts(callback) {
                 }
             })
         } else {
-            // callback({
-            //     'statusCode': res.statusCode,
-            //     'body': res.body
-            // });
+            callback({
+                'statusCode': res.statusCode,
+                'body': res.body
+            });
         }
     })
 }
