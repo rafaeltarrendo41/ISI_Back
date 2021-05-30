@@ -148,7 +148,7 @@ function distancia(request, response) {
             Toneladas: ${resultados[i].peso}<br>
             Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos da realização deste serviço <br>
             Este link apenas será válido durante 15 min<br>
-            <center><a href='https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching}'><button type='button'>Aceder a Conta</button></a></center><br><br>
+            <center><a href='https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching}'><button type='button'>Aceder</button></a></center><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching} <br><br>`;
 
                                             let bodycontentTransporte = ` <head> <style> button {background-color: #02475e; color: #fff} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
@@ -162,7 +162,7 @@ function distancia(request, response) {
             Toneladas: ${resultados[i].peso}<br>
             Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos da realização deste serviço <br>
             Este link apenas será válido durante 15 min<br>
-            <center><a href='https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${matching}'><button type='button'>Aceder a Conta</button></a></center><br><br>
+            <center><a href='https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${matching}'><button type='button'>Aceder</button></a></center><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${matching} <br><br>`;
 
                                             const enviar = nodemailer.createTransport({
@@ -521,7 +521,7 @@ function validarCompanies(request, response) {
             <form>
             Bem vindo à Wtransnet, <br> <br>
             A sua conta acabou de ser verificada e a partir deste momento poderá usufruir dos nossos serviços! <br>
-            <a href='https://wtransnet-face.herokuapp.com/login'> <br> <button type='button'>Aceder a Conta</button></a><br><br>
+            <a href='https://wtransnet-face.herokuapp.com/login'> <br> <button type='button'>Aceder</button></a><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/login <br><br>`;
             
 
@@ -600,7 +600,7 @@ function recusarCompanie(request, response) {
     <form> Caro utilizador, <br> <br>
     Após realizarmos a verificação dos dados relativos à sua conta, verificamos que os documentos submtidos não são válidos. Pedimos assim que efetue um novo registo com as mesmas credenciais. Obrigado!
     <br>
-    <center><a href='https://wtransnet-face.herokuapp.com/loginRecusados'><button type='button'>Submeter novos documentos</button></a></center><br><br>
+    <center><a href='https://wtransnet-face.herokuapp.com/loginRecusados'><button type='button'>Aceder</button></a></center><br><br>
     Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/loginRecusados <br><br>`;
 
     const aceitar = nodemailer.createTransport({
