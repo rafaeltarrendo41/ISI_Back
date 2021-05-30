@@ -600,8 +600,8 @@ function recusarCompanie(request, response) {
     <form> Caro utilizador, <br> <br>
     Após realizarmos a verificação dos dados relativos à sua conta, verificamos que os documentos submtidos não são válidos. Pedimos assim que efetue um novo registo com as mesmas credenciais. Obrigado!
     <br>
-    <center><a href='https://wtransnet-face.herokuapp.com/loginRecusados'><button type='button'>Aceder</button></a></center><br><br>
-    Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/loginRecusados <br><br>`;
+    <center><a href='https://wtransnet-face.herokuapp.com/register'><button type='button'>Aceder</button></a></center><br><br>
+    Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/register <br><br>`;
 
     const aceitar = nodemailer.createTransport({
         service: 'gmail',
