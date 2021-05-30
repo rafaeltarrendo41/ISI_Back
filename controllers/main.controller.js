@@ -739,15 +739,16 @@ function registerCompanie(req, response) {
 
 
 
-function getProductsJ(response) {
+function getProductsJ(request,response) {
     //console.log(request.body.properties.nif);
     jasminController.getProducts((res) => {
         if (res.statusCode == 200) {
             const users = res.products;
-            response.status(res.statusCode).send(users.nome);
+            response.status(200).send({
+                'cargas':users});
 
         } else {
-            response.status(res.statusCode).send(res.body);
+            response.status(400).send(users);
         }
     })
 }

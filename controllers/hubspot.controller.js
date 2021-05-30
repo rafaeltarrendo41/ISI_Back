@@ -285,83 +285,8 @@ function createEngagement(req, callback) {
     })
 }
 
-function addDeal(callback) {
-    // const associatedV = request.companieID;
-    // const associatedC = require.CompradorID;
-    // const cargaID = request.cargaID;
-    // var currentDate = new Date()
-    // var day = currentDate.getDate()
-    // var month = currentDate.getMonth() + 1
-    // var year = currentDate.getFullYear()
-    // const today = day+'/'+month+'/'+year 
-    // console.log(today);
-    const associatedC = 6068324512;
-    const associatedV = 6068324512;
-    const cargaID = 35;
-    const carga = true;
-
-
-    var options = {
-        method: 'POST',
-        url: 'https://api.hubapi.com/deals/v1/deal',
-        qs: { hapikey: process.env.HUBSPOT_KEY },
-        headers:
-            { 'Content-Type': 'application/json' },
-        body:
-        {
-            associations: { associatedCompanyIds: [associatedV], associatedVids: [] },
-            properties:
-                [{ value: cargaID, name: 'dealname' },
-                { value: 'closedwon', name: 'dealstage' },
-                { value: 'default', name: 'pipeline' },
-                //{ value: today, name: 'closedate' },
-                { value: '250', name: 'amount' },
-                { value: 'newbusiness', name: 'dealtype' }]
-        },
-        json: true
-    };
-
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-
-        console.log(response.statusCode);
-        if (response.statusCode == 200) {
-            if (carga) {
-                connection.query(`UPDATE carga SET comprador=${associatedC}, idVenda=${body.dealId} WHERE idCargas=${cargaID}`, async (err, rows) => {
-                    if (!err) {
-                        callback({
-                            'statusCode': 200,
-                            'message': 'deal criado'
-                        })
-                    } else {
-                        callback({
-                            'statusCode': 400,
-                            'message': 'deal n criado bd'
-                        })
-                    }
-                })
-            } else {
-                connection.query(`UPDATE transporte SET comprador=${associatedC}, idVenda=${body.dealId} WHERE idCargas=${cargaID}`, async (err, rows) => {
-                    if (!err) {
-                        callback({
-                            'statusCode': 200,
-                            'message': 'deal criado'
-                        })
-                    } else {
-                        callback({
-                            'statusCode': 400,
-                            'message': 'deal n criado bd'
-                        })
-                    }
-                })
-            }
-        } else {
-            callback.status(400).send({
-                'message': 'erro ao criar deal'
-            })
-        }
-
-    })
+function removeClient(callback) {
+    
 }
 module.exports = {
     getCompanies: getCompanies,
@@ -371,5 +296,5 @@ module.exports = {
     verAtachemnts: verAtachemnts,
     addFiles: addFiles,
     createEngagement: createEngagement,
-    addDeal: addDeal
+    //addDeal: addDeal
 }
