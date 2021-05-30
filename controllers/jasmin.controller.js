@@ -84,11 +84,16 @@ function getProducts(callback) {
                     // console.log(res.body);
                     let produtos = [];
                     for (let i = 0; i < tamnho.length; i++) {
+                        if(a[i].itemKey == '105' || a[i].itemKey == '155' || a[i].itemKey == 'A' || a[i].itemKey == 'CARGAQUARTOSAM'
+                        || a[i].itemKey == 'CARGAAREIA' || a[i].itemKey == 'CARGAPEDRA' || a[i].itemKey == 'PORTES'){}
+                        else {
                         //console.log(resp[i]);
                         produtos.push({
                             'nome': a[i].itemKey,
                             'dataCriacao': a[i].createdOn
                         })
+                    }
+                        
                     }
                     console.log(produtos);
                     callback({
