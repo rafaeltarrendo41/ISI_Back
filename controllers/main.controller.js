@@ -137,7 +137,7 @@ function distancia(request, response) {
 
 
 
-                                            let bodycontentCarga = ` <head> <style> button {background-color: #02475e} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+                                            let bodycontentCarga = ` <head> <style> button {background-color: #02475e; color: #fff } </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
                                             <br> <br> 
                                             <form> Caro utilizador, <br> <br>
             Uma das suas cargas publicadas no nosso serviço acabou de fazer matching com um transporte!  <br>
@@ -151,7 +151,7 @@ function distancia(request, response) {
             <center><a href='https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching}'><button type='button'>Aceder a Conta</button></a></center><br><br>
             Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching} <br><br>`;
 
-                                            let bodycontentTransporte = ` <head> <style> button {background-color: #02475e} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+                                            let bodycontentTransporte = ` <head> <style> button {background-color: #02475e; color: #fff} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
                                             <br> <br> 
                                             <form> Caro utilizador, <br> <br>
             Um dos seus tarnsportes publicados no nosso serviço acabou de fazer matching com uma carga!  <br>
@@ -516,7 +516,7 @@ function validarCompanies(request, response) {
             // response.status(200).send({
             //     'verificado': true
             // })
-            let bodycontent = `<head> <style> button {background-color: #02475e} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+            let bodycontent = `<head> <style> button {background-color: #02475e; color: #fff} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
             <br> <br> 
             <form>
             Bem vindo à Wtransnet, <br> <br>
@@ -595,7 +595,7 @@ function recusarCompanie(request, response) {
     const email = request.body.email;
 
 
-    let bodycontent = ` <head> <style> button {background-color: #02475e} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+    let bodycontent = ` <head> <style> button {background-color: #02475e; color: #fff} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
     <br> <br> 
     <form> Caro utilizador, <br> <br>
     Após realizarmos a verificação dos dados relativos à sua conta, verificamos que os documentos submtidos não são válidos. Pedimos assim que efetue um novo registo com as mesmas credenciais. Obrigado!
