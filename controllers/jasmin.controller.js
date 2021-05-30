@@ -7,8 +7,8 @@ const connect = require('./../config/dbConnection');
 
 function getToken(callback) {
     let json = querystring.stringify({
-        client_id: 'ISIGR83',
-        client_secret: 'f3d2ac5f-496f-4e52-9f37-80d2d9108d20',
+        client_id: 'ISIWTRANSNET',
+        client_secret: 'a5adfbbf-52cb-4066-b38c-e9b969f5f042',
         grant_type: 'client_credentials',
         scope: 'application'
     });
@@ -36,12 +36,12 @@ function getToken(callback) {
 }
 
 function retornar() {
-    // getToken((res) => {
-    // console.log(res.access_token);
-    // })
-    getProducts((res) => {
-        console.log("Aqui");
+    getToken((res) => {
+    console.log(res.access_token);
     })
+    // getProducts((res) => {
+    //     console.log("Aqui");
+    // })
     // getMaterials((res) => {
     //     console.log(res);
     // })
@@ -72,7 +72,7 @@ function getProducts(callback) {
                     'Authorization': `Bearer ${access_token}`,
                     'Content-Type': 'application/json'
                 },
-                url: `https://my.jasminsoftware.com/api/254470/254470-0001/salesCore/salesItems`
+                url: `https://my.jasminsoftware.com/api/252605/252605-0001/salesCore/salesItems`
             }
             req.get(options, (err, res, body) => {
                 //console.log(res.body).results;
@@ -368,6 +368,7 @@ function insertProduct(nome, callback) {
                             body: JSON.stringify(json)
                             //body: json
                         }
+                        console.log(options);
                         req.post(options, (err, res) => {
                             console.log(res.body);
                             if (!err && res.statusCode == 201) {
@@ -378,6 +379,7 @@ function insertProduct(nome, callback) {
                                 })
                              
                             } else {
+                                console.log(res.statusCode)
                               callback.status(400).send({
                                     'message': "erro ao adicionar produto"
                                 })
