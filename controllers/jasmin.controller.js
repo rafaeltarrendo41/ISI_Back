@@ -7,8 +7,8 @@ const connect = require('./../config/dbConnection');
 
 function getToken(callback) {
     let json = querystring.stringify({
-        client_id: 'ISIWTRANSNET',
-        client_secret: 'a5adfbbf-52cb-4066-b38c-e9b969f5f042',
+        client_id: 'ISIGR83',
+        client_secret: 'f3d2ac5f-496f-4e52-9f37-80d2d9108d20',
         grant_type: 'client_credentials',
         scope: 'application'
     });
@@ -72,7 +72,7 @@ function getProducts(callback) {
                     'Authorization': `Bearer ${access_token}`,
                     'Content-Type': 'application/json'
                 },
-                url: `https://my.jasminsoftware.com/api/252605/252605-0001/salesCore/salesItems`
+                url: `https://my.jasminsoftware.com/api/254470/254470-0001/salesCore/salesItems`
             }
             req.get(options, (err, res, body) => {
                 //console.log(res.body).results;
