@@ -51,4 +51,6 @@ router.get('/getProductsJASMIN', mainController.getProductsJ);
 
 router.get('/getProductsMoloni', mainController.getProductsM);
 
+//router.post('/deleteCompanieH', hubspotController.removeClient);
+
 module.exports = router;
