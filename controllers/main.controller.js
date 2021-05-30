@@ -674,7 +674,9 @@ function registerCompanie(req, response) {
                 hubspotController.existsNIF(nif, (res) => {
                     if (res.statusCode == 400) {
                         response.status(400).send({
-                                'error': 'NIF_EXISTS'
+                            'body': {
+                                'message': 'NIF_EXISTS'
+                            }
                         })
                     } else {
                         if (res.existe == false) {
