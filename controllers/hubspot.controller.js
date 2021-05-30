@@ -13,7 +13,7 @@ Função que permite ir buscar todos so clientes ao Hubspot
 
 function getCompanies(callback) {
     let options = {
-        url: `https://api.hubapi.com/crm/v3/objects/companies?limit=100&properties=contacts%2Cnumero_de_identificacao_fiscal%2Cname&archived=false&hapikey=${process.env.HUBSPOT_KEY}`
+        url: `https://api.hubapi.com/crm/v3/objects/companies?limit=100&properties=contacts%2Cnumero_de_identificacao_fiscal%2Cname%2Cemail&archived=false&hapikey=${process.env.HUBSPOT_KEY}`
     }
 
     request(options, function (error, response, body) {
