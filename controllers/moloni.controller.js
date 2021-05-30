@@ -13,12 +13,12 @@ function retornar() {
     // getCompany((res) => {
     //         console.log(res);
     //     })
-    getProducts((res) => {
-                 console.log(res);
-        })
-    // getCategory((res) => {
-    //         console.log(res);
-    //      })
+    // getProducts((res) => {
+    //              console.log(res);
+    //     })
+    getCategory((res) => {
+            console.log(res);
+         })
     // getProducts((res) => {
     //     console.log(res.body);
     // })
@@ -207,7 +207,7 @@ function insertProduct(nome, callback) {
                     console.log(res);
                     if (res.company_id) {
                         const company_id = res.company_id;
-                        const category_id = 3700122;
+                        const category_id = 3802953;
                         const type = 1;
                         const access_token = res.access_token;
 
@@ -609,7 +609,7 @@ function getCategory(callback) {
                     let resBody = JSON.parse(res.body);
                     let category_id = -1;
                     for (let i = 0; i < resBody.length; i++) {
-                        if (resBody[i].name == 'Transportes') {
+                        if (resBody[i].name == 'Transporte') {
                             category_id = resBody[i].category_id,
                                 nameC = resBody[i].name
                             // console.log(category_id);
