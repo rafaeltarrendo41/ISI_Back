@@ -131,35 +131,39 @@ function distancia(request, response) {
                                     connect.query(`SELECT idmatching FROM matching WHERE idCarga=${resultados[i].idCarga} AND idTransporte=${resultados[i].idTransporte}`, dados, (err, rows1) => {
                                         if (!err) {
                                             console.log(rows1);
-                                            const cona = rows1[0].idmatching;
-                                            //const cona = 10
-                                            console.log(cona);
+                                            const matching = rows1[0].idmatching;
+                                            //const matching = 10
+                                            console.log(matching);
 
 
 
-                                            let bodycontentCarga = `Olá caro utilizador, <br> <br>
+                                            let bodycontentCarga = ` <head> <style> button {background-color: #02475e} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+                                            <br> <br> 
+                                            <form> Caro utilizador, <br> <br>
             Uma das suas cargas publicadas no nosso serviço acabou de fazer matching com um transporte!  <br>
             Seguem em seguida as caracteristicas do transporte: <br>
             Origem: ${resultados[i].origem} <br>
             Destino: ${resultados[i].destino} <br>
             Especialidade: ${resultados[i].especialidade}<br>
             Toneladas: ${resultados[i].peso}<br>
-            Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos do realização deste serviço <br>
+            Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos da realização deste serviço <br>
             Este link apenas será válido durante 15 min<br>
-            <center><a href='https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${cona}'><button type='button'>Aceder a Conta</button></a></center><br><br>
-            Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${cona} <br><br>`;
+            <center><a href='https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching}'><button type='button'>Aceder a Conta</button></a></center><br><br>
+            Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching} <br><br>`;
 
-                                            let bodycontentTransporte = `Olá caro utilizador, <br> <br>
-            Uma dos seus tarnsportes publicadas no nosso serviço acabou de fazer matching com uma carga!  <br>
+                                            let bodycontentTransporte = ` <head> <style> button {background-color: #02475e} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+                                            <br> <br> 
+                                            <form> Caro utilizador, <br> <br>
+            Um dos seus tarnsportes publicados no nosso serviço acabou de fazer matching com uma carga!  <br>
             Seguem em seguida as caracteristicas da carga: <br>
             Origem: ${resultados[i].origem} <br>
             Destino: ${resultados[i].destino} <br>
             Especialidade: ${resultados[i].especialidade}<br>
             Toneladas: ${resultados[i].peso}<br>
-            Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos do realização deste serviço <br>
+            Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos da realização deste serviço <br>
             Este link apenas será válido durante 15 min<br>
-            <center><a href='https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${cona}'><button type='button'>Aceder a Conta</button></a></center><br><br>
-            Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${cona} <br><br>`;
+            <center><a href='https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${matching}'><button type='button'>Aceder a Conta</button></a></center><br><br>
+            Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${matching} <br><br>`;
 
                                             const enviar = nodemailer.createTransport({
                                                 service: 'gmail',
@@ -591,10 +595,13 @@ function recusarCompanie(request, response) {
     const email = request.body.email;
 
 
-    let bodycontent = `Olá caro utilizador, <br> <br>
-            Ao realizarmos a verificação da sua conta foi verificado, que os documentos não sao os corretos! Pedimos que submeta novos documentos <br>
-            <center><a href='https://wtransnet-face.herokuapp.com/loginRecusados'><button type='button'>Submeter novos documentos</button></a></center><br><br>
-            Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/loginRecusados <br><br>`;
+    let bodycontent = ` <head> <style> button {background-color: #02475e} </style> </head> <body> <img src="https://github.com/rafaeltarrendo41/ISI/blob/main/Templates/uploads_sites/2/2016_01/wtransnet_logo.png?raw=true">
+    <br> <br> 
+    <form> Caro utilizador, <br> <br>
+    Após realizarmos a verificação dos dados relativos à sua conta, verificamos que os documentos submtidos não são válidos. Pedimos assim que efetue um novo registo com as mesmas credenciais. Obrigado!
+    <br>
+    <center><a href='https://wtransnet-face.herokuapp.com/loginRecusados'><button type='button'>Submeter novos documentos</button></a></center><br><br>
+    Caso não consiga utilizar o botão click no seguinte link: https://wtransnet-face.herokuapp.com/loginRecusados <br><br>`;
 
     const aceitar = nodemailer.createTransport({
         service: 'gmail',
