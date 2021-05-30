@@ -673,10 +673,9 @@ function registerCompanie(req, response) {
             if (rows.length == 0) {
                 hubspotController.existsNIF(nif, (res) => {
                     if (res.statusCode == 400) {
-                        response.status(409).send({
-                            'aa': 'cona',
+                        response.status(400).send({
                             'body': {
-                                'error': 'NIF_EXISTS'
+                                'message': 'NIF_EXISTS'
                             }
                         })
                     } else {
@@ -716,29 +715,36 @@ function registerCompanie(req, response) {
                                         }
                                     })
                                 } else {
-                                    done(null, res);
+                                    response.status(400).send({
+                                        'body': {
+                                            'message': 'User not create'
+                                        }
+                                    })
                                 }
                             });
 
                         } else {
-                            done(null, {
-                                'statusCode': 409,
+                            response.status(400).send({
                                 'body': {
-                                    'error': 'NIF_EXISTS'
+                                    'message': 'NIF_EXISTS'
                                 }
-                            });
+                            })
                         }
                     }
                 });
             } else {
-                response.status(409).send({
+                response.status(400).send({
                     'body': {
-                        'error': 'CONTACT_EXISTS'
+                        'message': 'CONTACT_EXISTS'
                     }
                 });
             }
         } else {
-            response.status(res.statusCode).send(res.body);
+            response.status(400).send({
+                'body': {
+                    'message': 'User not create'
+                }
+            })
         }
     })
 }
