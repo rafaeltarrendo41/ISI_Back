@@ -146,6 +146,7 @@ function distancia(request, response) {
             Destino: ${resultados[i].destino} <br>
             Especialidade: ${resultados[i].especialidade}<br>
             Toneladas: ${resultados[i].peso}<br>
+            Email do Operador Logístico: ${rows[0].email}<br>
             Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos da realização deste serviço <br>
             Este link apenas será válido durante 15 min<br>
             <center><a href='https://wtransnet-face.herokuapp.com/matchCarga?idMatch=${matching}'><button type='button'>Aceder</button></a></center><br><br>
@@ -160,6 +161,7 @@ function distancia(request, response) {
             Destino: ${resultados[i].destino} <br>
             Especialidade: ${resultados[i].especialidade}<br>
             Toneladas: ${resultados[i].peso}<br>
+            Email do Operador Logístico: ${rows[1].email}<br>
             Caso deseje aceitar este matching, entre no próximo link para executar os próximos passos da realização deste serviço <br>
             Este link apenas será válido durante 15 min<br>
             <center><a href='https://wtransnet-face.herokuapp.com/matchTransporte?idMatch=${matching}'><button type='button'>Aceder</button></a></center><br><br>
