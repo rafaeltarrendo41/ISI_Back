@@ -123,7 +123,7 @@ function getByName(request, response) {
 }
 
 function insertInvoice(request, callback) {
-    const nome = 'Carpintaria Lopes';
+    const nome = request;
     var costumer_id = 0;
     // getByName(nome, (response) =>{
     //     costumer_id = response.costumer_id;
